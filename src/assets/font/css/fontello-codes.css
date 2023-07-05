@@ -1,0 +1,18 @@
+
+.vuu-account:before { content: '\e800'; } /* '' */
+.vuu-account-group:before { content: '\e801'; } /* '' */
+.vuu-account-group-outline:before { content: '\e802'; } /* '' */
+.vuu-account-outline:before { content: '\e803'; } /* '' */
+.vuu-home:before { content: '\e804'; } /* '' */
+.vuu-home-outline:before { content: '\e805'; } /* '' */
+.vuu-plus:before { content: '\e806'; } /* '' */
+.vuu-map-marker:before { content: '\e807'; } /* '' */
+.vuu-map-marker-outline:before { content: '\e808'; } /* '' */
+.vuu-phone-outline:before { content: '\e809'; } /* '' */
+.vuu-phone:before { content: '\e80a'; } /* '' */
+.vuu-at:before { content: '\e80b'; } /* '' */
+.vuu-cart-plus:before { content: '\e80c'; } /* '' */
+.vuu-tools:before { content: '\e80d'; } /* '' */
+.vuu-warehouse:before { content: '\e80e'; } /* '' */
+.vuu-bank-outline:before { content: '\e80f'; } /* '' */
+.vuu-bank:before { content: '\e810'; } /* '' */
