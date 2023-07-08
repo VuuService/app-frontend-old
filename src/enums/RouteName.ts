@@ -1,3 +1,6 @@
 export enum RouteName {
-  home = 'home'
+  home = 'home',
+  account = 'account',
+  customers = 'customers',
+  users = 'users'
 }
