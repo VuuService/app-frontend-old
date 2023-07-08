@@ -16,3 +16,8 @@
 .vuu-warehouse:before { content: '\e80e'; } /* '' */
 .vuu-bank-outline:before { content: '\e80f'; } /* '' */
 .vuu-bank:before { content: '\e810'; } /* '' */
+.vuu-search:before { content: '\e811'; } /* '' */
+.vuu-delete:before { content: '\e812'; } /* '' */
+.vuu-delete-outline:before { content: '\e813'; } /* '' */
+.vuu-pencil-outline:before { content: '\e814'; } /* '' */
+.vuu-pencil:before { content: '\e815'; } /* '' */
