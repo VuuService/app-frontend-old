@@ -18,7 +18,7 @@ const menuItems = ref<menuItemInterface[]>([
   <div
     class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 md:hidden"
   >
-    <div class="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
+    <div class="flex justify-between font-medium">
       <div v-for="menuItem in menuItems" :key="menuItem.icon">
         <router-link
           :to="{ name: menuItem.url }"
