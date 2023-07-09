@@ -21,3 +21,6 @@
 .vuu-delete-outline:before { content: '\e813'; } /* '' */
 .vuu-pencil-outline:before { content: '\e814'; } /* '' */
 .vuu-pencil:before { content: '\e815'; } /* '' */
+.vuu-settings-helper:before { content: '\e816'; } /* '' */
+.vuu-cog:before { content: '\e817'; } /* '' */
+.vuu-cog-alt:before { content: '\e818'; } /* '' */
