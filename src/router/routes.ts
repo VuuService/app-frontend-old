@@ -26,6 +26,16 @@ const routes: RouteRecordRaw[] = [
     path: '/users',
     name: RouteName.users,
     component: () => import('@/views/users/UsersIndex.vue')
+  },
+  {
+    path: '/roles',
+    name: RouteName.roles,
+    component: () => import('@/views/roles/RolesIndex.vue')
+  },
+  {
+    path: '/roles/create',
+    name: RouteName.roles_create,
+    component: () => import('@/views/roles/RolesCreate.vue')
   }
 ]
 export default routes

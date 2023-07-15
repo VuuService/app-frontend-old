@@ -4,5 +4,6 @@ export enum RouteName {
   customers = 'customers',
   users = 'users',
   users_create = 'users_create',
-  roles = 'roles'
+  roles = 'roles',
+  roles_create = 'roles_create'
 }
