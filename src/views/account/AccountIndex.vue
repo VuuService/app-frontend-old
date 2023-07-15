@@ -84,7 +84,7 @@ import { RouteName } from '@/enums/RouteName'
         class="inline-flex items-center justify-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
         href="#"
       >
-        <i class="vuu-account-outline text-2xl"></i>
+        <i class="vuu-box text-2xl"></i>
         <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Ürün</h5>
       </a>
       <a
