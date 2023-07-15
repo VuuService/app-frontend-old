@@ -26,3 +26,7 @@
 .vuu-cog-alt:before { content: '\e818'; } /* '' */
 .vuu-right-arrow:before { content: '\e819'; } /* '' */
 .vuu-left-arrow:before { content: '\e81a'; } /* '' */
+.vuu-account-multiple-plus:before { content: '\e81b'; } /* '' */
+.vuu-account-multiple-plus-outline:before { content: '\e81c'; } /* '' */
+.vuu-account-plus:before { content: '\e81d'; } /* '' */
+.vuu-account-plus-outline:before { content: '\e81e'; } /* '' */
