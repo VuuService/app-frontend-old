@@ -38,3 +38,5 @@
 .vuu-sort:before { content: '\e824'; } /* '' */
 .vuu-tag-plus:before { content: '\e825'; } /* '' */
 .vuu-tag-plus-outline:before { content: '\e826'; } /* '' */
+.vuu-tag:before { content: '\e827'; } /* '' */
+.vuu-tag-outline:before { content: '\e828'; } /* '' */
