@@ -36,3 +36,5 @@
 .vuu-filter:before { content: '\e822'; } /* '' */
 .vuu-filter-outline:before { content: '\e823'; } /* '' */
 .vuu-sort:before { content: '\e824'; } /* '' */
+.vuu-tag-plus:before { content: '\e825'; } /* '' */
+.vuu-tag-plus-outline:before { content: '\e826'; } /* '' */
