@@ -33,3 +33,10 @@
 .vuu-account-tie:before { content: '\e81f'; } /* '' */
 .vuu-account-tie-outline:before { content: '\e820'; } /* '' */
 .vuu-box:before { content: '\e821'; } /* '' */
+.vuu-filter:before { content: '\e822'; } /* '' */
+.vuu-filter-outline:before { content: '\e823'; } /* '' */
+.vuu-sort:before { content: '\e824'; } /* '' */
+.vuu-tag-plus:before { content: '\e825'; } /* '' */
+.vuu-tag-plus-outline:before { content: '\e826'; } /* '' */
+.vuu-tag:before { content: '\e827'; } /* '' */
+.vuu-tag-outline:before { content: '\e828'; } /* '' */
