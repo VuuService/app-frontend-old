@@ -7,5 +7,7 @@ export enum RouteName {
   roles = 'roles',
   roles_create = 'roles_create',
   stocks = 'stocks',
-  stocks_create = 'stocks_create'
+  stocks_create = 'stocks_create',
+  stocks_definitions = 'stocks_definitions',
+  stocks_definitions_create = 'stocks_definitions_create'
 }

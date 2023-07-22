@@ -46,6 +46,16 @@ const routes: RouteRecordRaw[] = [
     path: '/stocks/create',
     name: RouteName.stocks_create,
     component: () => import('@/views/stocks/StocksCreate.vue')
+  },
+  {
+    path: '/stocks_definitions',
+    name: RouteName.stocks_definitions,
+    component: () => import('@/views/stocks/StocksDefinitionsIndex.vue')
+  },
+  {
+    path: '/stocks_definitions/create',
+    name: RouteName.stocks_definitions_create,
+    component: () => import('@/views/stocks/StocksDefinitionsCreate.vue')
   }
 ]
 export default routes
