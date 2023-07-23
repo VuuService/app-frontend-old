@@ -10,6 +10,15 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "**/*.@(js|css|json)",
+        "destination": "/$0",
+        "type": "application/javascript"
+      },
+      {
+        "source": "**/*.@(png|jpg|jpeg|gif|svg|ico)",
+        "destination": "/$0"
       }
     ]
   }
