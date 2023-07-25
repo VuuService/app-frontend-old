@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import Main from "@/layouts/MainLayout.vue";
-import {ref} from "vue";
-
-let isAuth = ref(true);
-
+import Main from '@/layouts/MainLayout.vue'
 </script>
 <template>
-  <Main v-if="isAuth"></Main>
-  <router-view v-else></router-view>
+  <router-view></router-view>
 </template>

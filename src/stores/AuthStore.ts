@@ -1,17 +1,42 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { GetProfileFn, LoginFn } from '@/api/authApi'
+import { authApi } from '@/api/backendService'
 
 export const useAuthStore = defineStore('auth', () => {
-    const user = ref({})
-    const isAuth = computed(() => !user.value)
-    function login() {
+  const user = ref({})
+  const token = ref(localStorage.getItem('token'))
+  const isAuth = computed(() => !user.value)
+
+  async function login(LoginData: any) {
+    const bearer = await LoginFn(LoginData)
+
+    if (bearer != null) {
+      if (bearer.error) {
+        console.log(bearer.error)
+        return { isError: true, msg: bearer.error }
+      }
+
+      authApi.defaults.headers.common['Authorization'] = `Bearer ${bearer.access_token}`
+      localStorage.setItem('token', bearer.access_token)
+
+      await getProfile()
+
+      return { isError: false, msg: 'Giriş başarılı.' }
     }
 
-    function logout() {
-    }
+    return { isError: true, msg: 'Giriş yaparken bir hata oluştu.' }
+  }
 
-    function register() {
-    }
+  function logout() {
+    localStorage.removeItem('token')
+  }
 
-    return { user, isAuth, login, logout, register }
+  async function getProfile() {
+    user.value = await GetProfileFn()
+  }
+
+  function register() {}
+
+  return { user, isAuth, login, logout, register, getProfile }
 })

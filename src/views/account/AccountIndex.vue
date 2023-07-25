@@ -1,5 +1,13 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
+import { useAuthStore } from '@/stores/AuthStore'
+import { onBeforeMount } from 'vue'
+
+const auth = useAuthStore()
+
+onBeforeMount(() => {
+  auth.getProfile()
+})
 </script>
 
 <template>
@@ -60,8 +68,12 @@ import { RouteName } from '@/enums/RouteName'
         class="w-24 h-24 mb-3 rounded-full shadow-lg"
         src="https://picsum.photos/200"
       />
-      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Osman Piker</h5>
-      <span class="text-sm text-gray-500 dark:text-gray-400">İşyeri Sahibi</span>
+      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+        {{ auth.user.fullName }}
+      </h5>
+      <span class="text-sm text-gray-500 dark:text-gray-400">{{
+        auth.user.roles?.map((role) => role.name).join(', ')
+      }}</span>
     </div>
     <div class="grid grid-cols-2 gap-2 px-2">
       <a
