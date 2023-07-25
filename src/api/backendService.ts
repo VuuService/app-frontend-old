@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const BASE_URL = 'http://localhost:3000/'
 
-const authApi = axios.create({
+const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: false,
   headers: {
@@ -12,6 +12,6 @@ const authApi = axios.create({
 })
 
 // bearer token
-authApi.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+api.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
-export { authApi }
+export { api }

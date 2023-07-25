@@ -1,10 +1,10 @@
 import type { AxiosResponse, AxiosError } from 'axios'
-import { authApi } from '@/api/backendService'
+import { api } from '@/api/backendService'
 import { useRoute, useRouter } from 'vue-router'
 
 export const LoginFn = async (user: any) => {
   try {
-    const res: AxiosResponse = await authApi.post('auth/login', user)
+    const res: AxiosResponse = await api.post('auth/login', user)
 
     if (res.status === 201) {
       return res.data
@@ -24,7 +24,7 @@ export const RegisterFn = async (user: any) => {}
 
 export const GetProfileFn = async () => {
   try {
-    const res: AxiosResponse = await authApi.get('admin/profile')
+    const res: AxiosResponse = await api.get('admin/profile')
 
     if (res.status === 200) {
       return res.data
