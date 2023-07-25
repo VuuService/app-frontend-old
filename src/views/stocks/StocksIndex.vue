@@ -123,7 +123,6 @@ import BreadcrumbView from '@/components/BreadcrumbView.vue'
 </script>
 <style lang="css" scoped>
 .chips-container {
-  /* Hide the scroll bar */
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   scrollbar-width: none; /* For Firefox */
 }
