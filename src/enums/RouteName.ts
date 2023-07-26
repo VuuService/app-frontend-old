@@ -10,5 +10,6 @@ export enum RouteName {
   stocks = 'stocks',
   stocks_create = 'stocks_create',
   stocks_definitions = 'stocks_definitions',
-  stocks_definitions_create = 'stocks_definitions_create'
+  stocks_definitions_create = 'stocks_definitions_create',
+  sales = 'sales'
 }
