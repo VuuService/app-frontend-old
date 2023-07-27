@@ -7,6 +7,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_email"
         placeholder=" "
+        v-model="data.email"
         required
         type="email"
       />
@@ -22,6 +23,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_password"
         placeholder=" "
+        v-model="data.password"
         required
         type="password"
       />
@@ -37,6 +39,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="repeat_password"
         placeholder=" "
+        v-model="data.password_confirmation"
         required
         type="password"
       />
@@ -53,6 +56,7 @@
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_first_name"
           placeholder=" "
+          v-model="data.name"
           required
           type="text"
         />
@@ -68,6 +72,7 @@
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_last_name"
           placeholder=" "
+          v-model="data.surname"
           required
           type="text"
         />
@@ -86,6 +91,7 @@
           name="floating_phone"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           placeholder=" "
+          v-model="data.phone"
           required
           type="tel"
         />
@@ -99,7 +105,7 @@
       <div class="grid grid-cols-4 pb-6">
         <div class="flex justify-between items-center">
           <label class="relative inline-flex items-center cursor-pointer">
-            <input class="sr-only peer" type="checkbox" value="" />
+            <input class="sr-only peer" type="checkbox" value="" v-model="data.isSaler" />
             <div
               class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
             ></div>
@@ -193,6 +199,7 @@
     <button
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       type="submit"
+      @click.prevent="submitForm"
     >
       Submit
     </button>
@@ -203,8 +210,20 @@ import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'fl
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import { GetPermissionsFn } from '@/api/permissionsApi'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { api } from '@/api/backendService'
 
 let permissions = ref({})
+let data = ref({
+  email: '',
+  password: '',
+  password_confirmation: '',
+  name: '',
+  surname: '',
+  phone: '',
+  isSaler: true,
+  permissions: []
+})
 
 GetPermissionsFn().then((res) => {
   permissions.value = groupByModule(res)
@@ -237,8 +256,6 @@ function handlePermissionChange(permission) {
   } else {
     selectedPermissions.value = selectedPermissions.value.filter((x) => x.id !== permission.id)
   }
-
-  console.log(selectedPermissions.value)
 }
 
 function toggleModulePermissions(module, isAllChecked) {
@@ -253,6 +270,12 @@ function toggleModulePermissions(module, isAllChecked) {
 
     selectedPermissions.value = [...selectedPermissions.value, ...excludedPermissions]
   }
-  console.log(selectedPermissions.value)
+}
+
+function submitForm() {
+  data.value.permissions = selectedPermissions.value
+  api.post('admin/createCustomer', data.value).then((res) => {
+    console.log(res)
+  })
 }
 </script>
