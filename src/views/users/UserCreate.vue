@@ -7,6 +7,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_email"
         placeholder=" "
+        v-model="data.email"
         required
         type="email"
       />
@@ -22,6 +23,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_password"
         placeholder=" "
+        v-model="data.password"
         required
         type="password"
       />
@@ -37,6 +39,7 @@
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="repeat_password"
         placeholder=" "
+        v-model="data.password_confirmation"
         required
         type="password"
       />
@@ -53,6 +56,7 @@
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_first_name"
           placeholder=" "
+          v-model="data.name"
           required
           type="text"
         />
@@ -68,6 +72,7 @@
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_last_name"
           placeholder=" "
+          v-model="data.surname"
           required
           type="text"
         />
@@ -86,6 +91,7 @@
           name="floating_phone"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           placeholder=" "
+          v-model="data.phone"
           required
           type="tel"
         />
@@ -94,6 +100,18 @@
           for="floating_phone"
           >Telefon Numarası</label
         >
+      </div>
+
+      <div class="grid grid-cols-4 pb-6">
+        <div class="flex justify-between items-center">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input class="sr-only peer" type="checkbox" value="" v-model="data.isSaler" />
+            <div
+              class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+            ></div>
+          </label>
+          <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"> Satıcı mı?</span>
+        </div>
       </div>
 
       <Accordion class="mb-8 shadow">
@@ -116,20 +134,63 @@
           </accordion-content>
         </accordion-panel>
         <accordion-panel>
-          <accordion-header>Modül İzinleri</accordion-header>
+          <accordion-header> Modül İzinleri </accordion-header>
           <accordion-content>
-            <div class="grid grid-cols-2 gap-2">
-              <div v-for="i in 5" :key="i" class="flex justify-between items-center">
+            <div
+              v-for="(groupedPermissions, module) in permissions"
+              :key="module"
+              class="border-b py-2"
+            >
+              <div class="mb-2 flex justify-between items-center pb-6">
+                <div class="font-bold">{{ module }} İzinleri</div>
+
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input class="sr-only peer" type="checkbox" value="" />
+                  <input
+                    class="sr-only peer"
+                    type="checkbox"
+                    :checked="permissions[module].isAllChecked()"
+                    @change="toggleModulePermissions(module, permissions[module].isAllChecked())"
+                  />
                   <div
-                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                    class="w-11 h-6 bg-gray-200 peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
                   ></div>
+                  <span class="ml-2">Tümünü Seç</span>
                 </label>
-                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >Modül Tanımı {{ i }}
-                </span>
               </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div
+                  v-for="permission in groupedPermissions.permissions"
+                  :key="permission.id"
+                  class="flex justify-between items-center border-2 rounded-xl p-2"
+                >
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input
+                      class="sr-only peer"
+                      type="checkbox"
+                      :checked="permission.checked"
+                      :id="permission.id"
+                      @change="handlePermissionChange(permission)"
+                    />
+                    <div
+                      class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                    ></div>
+                  </label>
+                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    {{ permission.permission }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </accordion-content>
+        </accordion-panel>
+      </Accordion>
+
+      <Accordion>
+        <accordion-panel>
+          <accordion-content>
+            <div class="font-bold">Seçilen İzinler</div>
+            <div v-for="i in selectedPermissions" :key="i">
+              {{ i.module + ' ' + i.permission }}
             </div>
           </accordion-content>
         </accordion-panel>
@@ -138,6 +199,7 @@
     <button
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       type="submit"
+      @click.prevent="submitForm"
     >
       Submit
     </button>
@@ -146,4 +208,74 @@
 <script lang="ts" setup>
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'flowbite-vue'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import { GetPermissionsFn } from '@/api/permissionsApi'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { api } from '@/api/backendService'
+
+let permissions = ref({})
+let data = ref({
+  email: '',
+  password: '',
+  password_confirmation: '',
+  name: '',
+  surname: '',
+  phone: '',
+  isSaler: true,
+  permissions: []
+})
+
+GetPermissionsFn().then((res) => {
+  permissions.value = groupByModule(res)
+})
+
+function groupByModule(permissions) {
+  const grouped = {}
+
+  permissions.forEach((permission) => {
+    if (!grouped[permission.module]) {
+      grouped[permission.module] = {
+        permissions: [],
+        isAllChecked: () => grouped[permission.module].permissions.every((perm) => perm.checked)
+      }
+    }
+
+    grouped[permission.module].permissions.push(permission)
+  })
+
+  return grouped
+}
+
+let moduleSelection = ref([])
+let selectedPermissions = ref([])
+
+function handlePermissionChange(permission) {
+  permission.checked = !permission.checked
+  if (permission.checked) {
+    selectedPermissions.value.push(permission)
+  } else {
+    selectedPermissions.value = selectedPermissions.value.filter((x) => x.id !== permission.id)
+  }
+}
+
+function toggleModulePermissions(module, isAllChecked) {
+  permissions.value[module].permissions.forEach((x) => (x.checked = !isAllChecked))
+
+  if (isAllChecked) {
+    selectedPermissions.value = selectedPermissions.value.filter((x) => x.module !== module)
+  } else {
+    let excludedPermissions = permissions.value[module].permissions.filter(
+      (x) => !selectedPermissions.value.includes(x)
+    )
+
+    selectedPermissions.value = [...selectedPermissions.value, ...excludedPermissions]
+  }
+}
+
+function submitForm() {
+  data.value.permissions = selectedPermissions.value
+  api.post('admin/createCustomer', data.value).then((res) => {
+    console.log(res)
+  })
+}
 </script>
