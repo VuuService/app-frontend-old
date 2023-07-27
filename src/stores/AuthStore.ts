@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { GetProfileFn, LoginFn } from '@/api/authApi'
-import { authApi } from '@/api/backendService'
+import { api } from '@/api/backendService'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref({})
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
         return { isError: true, msg: bearer.error }
       }
 
-      authApi.defaults.headers.common['Authorization'] = `Bearer ${bearer.access_token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${bearer.access_token}`
       localStorage.setItem('token', bearer.access_token)
 
       await getProfile()
