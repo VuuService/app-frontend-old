@@ -119,15 +119,21 @@
           <accordion-header>Görev Tanımı</accordion-header>
           <accordion-content>
             <div class="grid grid-cols-2 gap-2">
-              <div v-for="i in 5" :key="i" class="flex justify-between items-center">
+              <div v-for="i in roles" :key="i" class="flex justify-between items-center">
                 <label class="relative inline-flex items-center cursor-pointer">
-                  <input class="sr-only peer" type="checkbox" value="" />
+                  <input
+                    class="sr-only peer"
+                    type="checkbox"
+                    value=""
+                    :checked="i.checked"
+                    @change="checkRole(i.id)"
+                  />
                   <div
                     class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
                   ></div>
                 </label>
                 <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >Görev Tanımı {{ i }}
+                  >Görev Tanımı {{ i.name }}
                 </span>
               </div>
             </div>
@@ -208,12 +214,14 @@
 <script lang="ts" setup>
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'flowbite-vue'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { GetPermissionsFn } from '@/api/permissionsApi'
+import { GetPermissionsFn, GetRolesFn } from '@/api/permissionsApi'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/api/backendService'
 
 let permissions = ref({})
+let roles = ref({})
+
 let data = ref({
   email: '',
   password: '',
@@ -228,6 +236,30 @@ let data = ref({
 GetPermissionsFn().then((res) => {
   permissions.value = groupByModule(res)
 })
+
+GetRolesFn().then((res) => {
+  roles.value = res
+
+  roles.value.forEach((role) => {
+    role.checked = false
+  })
+})
+
+function checkRole(roleId) {
+  const role = roles.value.find((x) => x.id === roleId)
+  role.checked = !role.checked
+  role.permissions.forEach((permission) => {
+    permissions.value[permission.module].permissions.find((x) => x.id === permission.id).checked =
+      role.checked
+  })
+}
+
+function isRoleAllChecked(roleId) {
+  const role = roles.value.find((x) => x.id === roleId)
+  return role.permissions.every(
+    (perm) => permissions.value[perm.module].permissions[perm.id].checked
+  )
+}
 
 function groupByModule(permissions) {
   const grouped = {}
@@ -251,13 +283,20 @@ let selectedPermissions = ref([])
 
 function handlePermissionChange(permission) {
   permission.checked = !permission.checked
+
+  // Find the role that contains the modified permission
+  const role = roles.value.find((r) => r.permissions.some((p) => p.id === permission.id))
+
+  // Check if all permissions in the role are checked
+  role.checked = role.permissions.every((p) => p.checked)
+
+  // Add or remove the permission from the selectedPermissions array
   if (permission.checked) {
     selectedPermissions.value.push(permission)
   } else {
     selectedPermissions.value = selectedPermissions.value.filter((x) => x.id !== permission.id)
   }
 }
-
 function toggleModulePermissions(module, isAllChecked) {
   permissions.value[module].permissions.forEach((x) => (x.checked = !isAllChecked))
 
