@@ -15,7 +15,12 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/customers',
         name: RouteName.customers,
-        component: () => import('@/views/account/AccountIndex.vue')
+        component: () => import('@/views/customers/CustomersIndex.vue')
+      },
+      {
+        path: '/customers/create',
+        name: RouteName.customers_create,
+        component: () => import('@/views/customers/CustomersCreate.vue')
       },
       {
         path: '/users/create',
@@ -62,12 +67,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: RouteName.login,
-    component: () => import('@/views/auth/Login.vue')
+    component: () => import('@/views/auth/LoginView.vue')
   },
   {
     path: '/register',
     name: RouteName.register,
-    component: () => import('@/views/auth/Register.vue')
+    component: () => import('@/views/auth/RegisterView.vue')
   }
 ]
 
