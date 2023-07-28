@@ -47,6 +47,16 @@ const routes: RouteRecordRaw[] = [
         name: RouteName.stocks_create,
         component: () => import('@/views/stocks/StocksCreate.vue')
       }
+  {
+    path: '/stocks_definitions',
+    name: RouteName.stocks_definitions,
+    component: () => import('@/views/stocks/StocksDefinitionsIndex.vue')
+  },
+  {
+    path: '/stocks_definitions/create',
+    name: RouteName.stocks_definitions_create,
+    component: () => import('@/views/stocks/StocksDefinitionsCreate.vue')
+  }
     ]
   },
   {
@@ -55,9 +65,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/auth/Login.vue')
   },
   {
+
     path: '/register',
     name: RouteName.register,
     component: () => import('@/views/auth/Register.vue')
+
   }
 ]
 

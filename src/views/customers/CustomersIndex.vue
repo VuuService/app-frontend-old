@@ -55,20 +55,19 @@
       <ul role="list">
         <li>
           <router-link
-            :to="{ name: RouteName.stocks_create }"
+            :to="{ name: RouteName.customers_create }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
               <div
-                class="relative bg-gray-100 rounded h-12 w-12 overflow-hidden flex items-center justify-center"
+                class="relative bg-gray-100 rounded-full h-12 w-12 overflow-hidden flex items-center justify-center"
               >
-                <i class="vuu-box text-gray-400 text-4xl m-0 before:!m-0"></i>
-                <i class="vuu-plus absolute text-2xl -right-2.5 -bottom-1.5"></i>
+                <i class="vuu-account-plus text-gray-400 text-4xl m-0 before:!m-0"></i>
               </div>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                Yeni Ürün Oluştur
+                Yeni Müşteri Oluştur
               </p>
             </div>
             <div
@@ -81,19 +80,19 @@
 
         <li v-for="i in 4" :key="i">
           <router-link
-            :to="{ name: RouteName.stocks_create }"
+            :to="{ name: RouteName.customers_create }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
               <img
                 alt="Neil image"
-                class="w-12 h-12 rounded"
+                class="w-12 h-12 rounded-full"
                 src="https://picsum.photos/seed/picsum/200/300"
               />
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                Matkap
+                Ahmet YILDIZ
               </p>
             </div>
             <div
@@ -113,7 +112,7 @@
       href="#"
     >
       <i class="vuu-tag-outline text-2xl"></i>
-      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Ürün Tanımları</h5>
+      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Müşteri Tanımları</h5>
     </router-link>
   </div>
 </template>
