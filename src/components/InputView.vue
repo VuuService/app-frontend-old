@@ -1,27 +1,34 @@
-<input
-  :id="id"
-  :type="props.type"
-  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-  placeholder=" "
-  required
-/>
-<label
-  :for="id"
-  class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
->{{ props.placeholder }}</label>
+<template>
+  <div class="relative z-0 w-full mt-4 group">
+    <input
+      :id="id"
+      :required="required"
+      :type="type"
+      class="block pt-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+      placeholder=" "
+    />
+    <label
+      :for="id"
+      class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+      >{{ placeholder }}</label
+    >
+  </div>
+</template>
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { randomInt } from '@/utils/math'
 
-const id = ref<string>('input' + randomInt(0, 9999 * 9999))
-const props = withDefaults(
-  defineProps<{
-    type: string
-    placeholder: string
-  }>(),
-  {
-    type: 'text',
-    placeholder: ''
-  }
-)
+const id = ref<string>('input' + randomInt(1, 9999 * 9999))
+
+export interface Props {
+  placeholder?: string
+  type?: string
+  required?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: 'hello',
+  type: 'text',
+  required: false
+})
 </script>
