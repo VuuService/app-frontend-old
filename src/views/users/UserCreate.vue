@@ -4,10 +4,10 @@
     <div class="relative z-0 w-full mb-6 group">
       <input
         id="floating_email"
+        v-model="data.email"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_email"
         placeholder=" "
-        v-model="data.email"
         required
         type="email"
       />
@@ -20,10 +20,10 @@
     <div class="relative z-0 w-full mb-6 group">
       <input
         id="floating_password"
+        v-model="data.password"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="floating_password"
         placeholder=" "
-        v-model="data.password"
         required
         type="password"
       />
@@ -36,10 +36,10 @@
     <div class="relative z-0 w-full mb-6 group">
       <input
         id="floating_repeat_password"
+        v-model="data.password_confirmation"
         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         name="repeat_password"
         placeholder=" "
-        v-model="data.password_confirmation"
         required
         type="password"
       />
@@ -53,10 +53,10 @@
       <div class="relative z-0 w-full mb-6 group">
         <input
           id="floating_first_name"
+          v-model="data.name"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_first_name"
           placeholder=" "
-          v-model="data.name"
           required
           type="text"
         />
@@ -69,10 +69,10 @@
       <div class="relative z-0 w-full mb-6 group">
         <input
           id="floating_last_name"
+          v-model="data.surname"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_last_name"
           placeholder=" "
-          v-model="data.surname"
           required
           type="text"
         />
@@ -87,11 +87,11 @@
       <div class="relative z-0 w-full mb-6 group">
         <input
           id="floating_phone"
+          v-model="data.phone"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           name="floating_phone"
           pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           placeholder=" "
-          v-model="data.phone"
           required
           type="tel"
         />
@@ -105,7 +105,7 @@
       <div class="grid grid-cols-4 pb-6">
         <div class="flex justify-between items-center">
           <label class="relative inline-flex items-center cursor-pointer">
-            <input class="sr-only peer" type="checkbox" value="" v-model="data.isSaler" />
+            <input v-model="data.isSaler" class="sr-only peer" type="checkbox" value="" />
             <div
               class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
             ></div>
@@ -122,10 +122,10 @@
               <div v-for="i in roles" :key="i" class="flex justify-between items-center">
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input
+                    :checked="i.checked"
                     class="sr-only peer"
                     type="checkbox"
                     value=""
-                    :checked="i.checked"
                     @change="checkRole(i.id)"
                   />
                   <div
@@ -140,7 +140,7 @@
           </accordion-content>
         </accordion-panel>
         <accordion-panel>
-          <accordion-header> Modül İzinleri </accordion-header>
+          <accordion-header> Modül İzinleri</accordion-header>
           <accordion-content>
             <div
               v-for="(groupedPermissions, module) in permissions"
@@ -152,9 +152,9 @@
 
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input
+                    :checked="permissions[module].isAllChecked()"
                     class="sr-only peer"
                     type="checkbox"
-                    :checked="permissions[module].isAllChecked()"
                     @change="toggleModulePermissions(module, permissions[module].isAllChecked())"
                   />
                   <div
@@ -171,10 +171,10 @@
                 >
                   <label class="relative inline-flex items-center cursor-pointer">
                     <input
+                      :id="permission.id"
+                      :checked="permission.checked"
                       class="sr-only peer"
                       type="checkbox"
-                      :checked="permission.checked"
-                      :id="permission.id"
                       @change="handlePermissionChange(permission)"
                     />
                     <div
@@ -216,7 +216,6 @@ import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'fl
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import { GetPermissionsFn, GetRolesFn } from '@/api/permissionsApi'
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { api } from '@/api/backendService'
 
 let permissions = ref({})
@@ -230,7 +229,8 @@ let data = ref({
   surname: '',
   phone: '',
   isSaler: true,
-  permissions: []
+  permissions: [],
+  roles: []
 })
 
 GetPermissionsFn().then((res) => {
@@ -252,6 +252,8 @@ function checkRole(roleId) {
     permissions.value[permission.module].permissions.find((x) => x.id === permission.id).checked =
       role.checked
   })
+
+  console.log((data.value.roles = roles.value.filter((x) => x.checked)))
 }
 
 function isRoleAllChecked(roleId) {
@@ -288,7 +290,10 @@ function handlePermissionChange(permission) {
   const role = roles.value.find((r) => r.permissions.some((p) => p.id === permission.id))
 
   // Check if all permissions in the role are checked
-  role.checked = role.permissions.every((p) => p.checked)
+  if (role) {
+    // Check if all permissions in the role are checked
+    role.checked = role.permissions.every((p) => p.checked)
+  }
 
   // Add or remove the permission from the selectedPermissions array
   if (permission.checked) {
@@ -297,6 +302,7 @@ function handlePermissionChange(permission) {
     selectedPermissions.value = selectedPermissions.value.filter((x) => x.id !== permission.id)
   }
 }
+
 function toggleModulePermissions(module, isAllChecked) {
   permissions.value[module].permissions.forEach((x) => (x.checked = !isAllChecked))
 
@@ -313,6 +319,15 @@ function toggleModulePermissions(module, isAllChecked) {
 
 function submitForm() {
   data.value.permissions = selectedPermissions.value
+  data.value.roles = roles.value.filter((role) => role.checked)
+  let existingPermissionIds = []
+  existingPermissionIds = data.value.roles.flatMap((role) =>
+    role.permissions.map((perm) => perm.id)
+  )
+  data.value.permissions = data.value.permissions.filter(
+    (perm) => !existingPermissionIds.includes(perm.id)
+  )
+
   api.post('admin/createCustomer', data.value).then((res) => {
     console.log(res)
   })
