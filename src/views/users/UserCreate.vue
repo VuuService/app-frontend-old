@@ -319,19 +319,13 @@ function toggleModulePermissions(module, isAllChecked) {
 
 function submitForm() {
   data.value.permissions = selectedPermissions.value
-  data.value.roles = roles.value.filter((x) => x.checked)
-
-  let excludePermission = []
-  data.value.roles.forEach((role) => {
-    role.permissions.forEach((permission) => {
-      if (!data.value.permissions.includes(permission)) {
-        excludePermission.push(permission)
-      }
-    })
-  })
-
-  selectedPermissions.value = selectedPermissions.value.filter(
-    (x) => !excludePermission.includes(x)
+  data.value.roles = roles.value.filter((role) => role.checked)
+  let existingPermissionIds = []
+  existingPermissionIds = data.value.roles.flatMap((role) =>
+    role.permissions.map((perm) => perm.id)
+  )
+  data.value.permissions = data.value.permissions.filter(
+    (perm) => !existingPermissionIds.includes(perm.id)
   )
 
   api.post('admin/createCustomer', data.value).then((res) => {
