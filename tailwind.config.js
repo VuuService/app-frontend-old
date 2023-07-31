@@ -11,5 +11,6 @@ export default {
   theme: {
     extend: {}
   },
+  safelist: [],
   plugins: [flowbite]
 }
