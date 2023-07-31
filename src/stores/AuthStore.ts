@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { GetProfileFn, LoginFn } from '@/api/authApi'
 import { api } from '@/api/backendService'
@@ -34,6 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function getProfile() {
     user.value = await GetProfileFn()
+
+    return user.value
   }
 
   function register() {}
