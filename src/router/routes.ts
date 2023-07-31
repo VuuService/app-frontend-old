@@ -61,6 +61,17 @@ const routes: RouteRecordRaw[] = [
         path: '/stocks_definitions/create',
         name: RouteName.stocks_definitions_create,
         component: () => import('@/views/stocks/StocksDefinitionsCreate.vue')
+      },
+      {
+        path: '/definitions',
+        name: RouteName.definitions,
+        props: true,
+        component: () => import('@/views/definitions/DefinitionsIndex.vue')
+      },
+      {
+        path: '/definitions/create',
+        name: RouteName.definitions_create,
+        component: () => import('@/views/definitions/DefinitionsCreate.vue')
       }
     ]
   },

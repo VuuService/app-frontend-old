@@ -13,7 +13,9 @@ export enum RouteName {
   login = 'login',
   register = 'register',
 
+  definitions = 'definitions',
+  definitions_create = 'definitions_create',
+
   stocks_definitions = 'stocks_definitions',
   stocks_definitions_create = 'stocks_definitions_create'
-
 }
