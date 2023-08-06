@@ -11,19 +11,18 @@ const router = createRouter({
 
 router.beforeEach((routeTo, routeFrom, next) => {
   const user = userStore()
-  const publicPages = ['/login', '/register', '/forgot-password']
-  const authpage = !publicPages.includes(routeTo.path)
-  const loginpage = publicPages.includes(routeTo.path)
+  const publicPages = ['login', 'register', 'forgot-password']
+  const authpage = routeTo.path.split('/').filter((x) => publicPages.includes(x))
   const loggeduser = user.isAuth
 
-  if (authpage && !loggeduser) {
+  if (authpage.length == 0 && !loggeduser) {
     return next('/login')
   }
   if (loggeduser) {
     AppAxios.defaults.headers['Authorization'] = 'Bearer ' + user.getAccessToken
   }
-  if (loginpage && loggeduser) {
-    router.push('/')
+  if (authpage.length > 0 && loggeduser) {
+    return next('/')
   }
   if (loggeduser && !user.company && routeTo.path != '/company/create') {
     router.push({ name: RouteName.company_create })
