@@ -1,44 +1,36 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { GetProfileFn, LoginFn } from '@/api/authApi'
-import { api } from '@/api/backendService'
+import AppAxios from '@/utils/AppAxios'
+import type { AxiosResponse } from 'axios'
+import type { UserInterface } from '@/api/UserApi'
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref({})
-  const token = ref(localStorage.getItem('token'))
-  const isAuth = computed(() => !user.value)
+export const userStore = defineStore('user', () => {
+  const state = localStorage.getItem('user')
+    ? ref(JSON.parse(localStorage.getItem('user') as string))
+    : ref()
+  const isAuth = computed(() => state.value?.token?.access_token != null)
+  const getAccessToken = computed(() => state.value?.token?.access_token)
+  const user = computed(() => state.value)
+  const permissions = computed(() => state.value.permissions)
+  const company = computed(() => state.value?.company)
 
-  async function login(LoginData: any) {
-    const bearer = await LoginFn(LoginData)
-
-    if (bearer != null) {
-      if (bearer.error) {
-        console.log(bearer.error)
-        return { isError: true, msg: bearer.error }
-      }
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${bearer.access_token}`
-      localStorage.setItem('token', bearer.access_token)
-
-      await getProfile()
-
-      return { isError: false, msg: 'Giriş başarılı.' }
-    }
-
-    return { isError: true, msg: 'Giriş yaparken bir hata oluştu.' }
+  async function login(data: any) {
+    return await AppAxios.post('/users/login', data)
+      .then((r: AxiosResponse<UserInterface>) => {
+        state.value = r.data
+        localStorage.setItem('user', JSON.stringify(r.data))
+        return { success: true }
+      })
+      .catch((e) => {
+        console.log(e)
+        return { success: false }
+      })
   }
 
-  function logout() {
-    localStorage.removeItem('token')
+  function updateUser(data: UserInterface) {
+    state.value = data
+    localStorage.setItem('user', JSON.stringify(data))
   }
 
-  async function getProfile() {
-    user.value = await GetProfileFn()
-
-    return user.value
-  }
-
-  function register() {}
-
-  return { user, isAuth, login, logout, register, getProfile }
+  return { user, isAuth, login, getAccessToken, permissions, company, updateUser }
 })
