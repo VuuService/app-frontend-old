@@ -1,14 +1,10 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
-import { useAuthStore } from '@/stores/AuthStore'
-import { onBeforeMount } from 'vue'
-import { ModuleName } from '@/enums/ModuleName'
+import { userStore } from '@/stores/AuthStore'
+import { PermissionName } from '@/enums/PermissionName'
+import { isGranted } from '@/api/UserApi'
 
-const auth = useAuthStore()
-
-onBeforeMount(() => {
-  auth.getProfile()
-})
+const { user } = userStore()
 </script>
 
 <template>
@@ -69,22 +65,23 @@ onBeforeMount(() => {
         class="w-24 h-24 mb-3 rounded-full shadow-lg"
         src="https://picsum.photos/200"
       />
-      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-        {{ auth.user.fullName }}
-      </h5>
-      <span class="text-sm text-gray-500 dark:text-gray-400">{{
-        auth.user.roles?.map((role) => role.name).join(', ')
-      }}</span>
+      <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white"></h5>
+      <span class="text-sm text-gray-500 dark:text-gray-400">{{ user.role }}</span>
     </div>
     <div class="grid grid-cols-2 gap-2 px-2">
-      <a
+      <router-link
+        v-if="isGranted(PermissionName.users_read)"
+        :to="{ name: RouteName.users }"
         class="inline-flex items-center justify-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-        href="#"
       >
         <i class="vuu-account-outline text-2xl"></i>
         <h5 class="font-bold tracking-tight text-gray-900 text-center dark:text-white">
-          İşletme
-        </h5></a
+          {{
+            isGranted(PermissionName.admin_op) || isGranted(PermissionName.seller_sales)
+              ? 'Kullanıcılar'
+              : 'Personel'
+          }}
+        </h5></router-link
       >
 
       <router-link
@@ -109,7 +106,7 @@ onBeforeMount(() => {
         <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Ürün</h5>
       </router-link>
       <router-link
-        :to="{ name: RouteName.definitions, query: { type: ModuleName.category } }"
+        :to="{ name: RouteName.definitions }"
         class="inline-flex items-center justify-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
         <i class="vuu-sort text-2xl"></i>
