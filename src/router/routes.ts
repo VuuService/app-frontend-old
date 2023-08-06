@@ -5,7 +5,6 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: RouteName.home,
-    component: () => import('@/layouts/MainLayout.vue'),
     children: [
       {
         path: '/account',
@@ -43,6 +42,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/roles/RolesCreate.vue')
       },
       {
+        path: '/roles/edit/:name/:id',
+        name: RouteName.roles_update,
+        component: () => import('@/views/roles/RolesEdit.vue')
+      },
+      {
         path: '/stocks',
         name: RouteName.stocks,
         component: () => import('@/views/stocks/StocksIndex.vue')
@@ -72,6 +76,11 @@ const routes: RouteRecordRaw[] = [
         path: '/definitions/create',
         name: RouteName.definitions_create,
         component: () => import('@/views/definitions/DefinitionsCreate.vue')
+      },
+      {
+        path: '/company/create',
+        name: RouteName.company_create,
+        component: () => import('@/views/company/CreateCompany.vue')
       }
     ]
   },
