@@ -2,9 +2,9 @@
 import Main from '@/layouts/MainLayout.vue'
 import { userStore } from '@/stores/AuthStore'
 
-const { user } = userStore()
+const { isAuth } = userStore()
 </script>
 <template>
-  <Main v-if="user?.token"></Main>
+  <Main v-if="isAuth"></Main>
   <router-view v-else></router-view>
 </template>
