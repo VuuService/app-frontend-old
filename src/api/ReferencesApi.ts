@@ -1,10 +1,16 @@
-import type { UserInterface } from '@/api/UserApi'
 import AppAxios from '@/utils/AppAxios'
 import type { AxiosResponse } from 'axios'
+import type { CompanyInterface } from '@/api/CompanyApi'
+
+interface Box {
+  permissions: string[]
+  title?: string | undefined
+  role?: string | null
+}
 
 export interface CreateReferenceInterface {
-  user?: UserInterface
-  box?: object
+  company: CompanyInterface
+  box?: Box
 }
 
 export interface ReferenceInterface extends CreateReferenceInterface {
