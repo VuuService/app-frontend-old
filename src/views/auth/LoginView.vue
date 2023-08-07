@@ -19,7 +19,7 @@ const LoginData = ref({
 })
 
 async function submit() {
-  await login(LoginData.value).then(() => router.push({ name: RouteName.account }))
+  await login(LoginData.value).then(() => router.go({ name: RouteName.account }))
 }
 </script>
 
