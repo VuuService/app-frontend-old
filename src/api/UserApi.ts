@@ -6,6 +6,7 @@ export interface UserInterface {
   email: string
   password: string
   role: string
+  title: string
   permissions: string[]
   token: {
     access_token: string
