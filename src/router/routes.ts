@@ -27,6 +27,16 @@ const routes: RouteRecordRaw[] = [
         component: () => import('../views/users/UserCreate.vue')
       },
       {
+        path: '/users/:fullname/:id',
+        name: RouteName.users_view,
+        component: () => import('../views/users/UserProfile.vue')
+      },
+      {
+        path: '/users/edit/:fullname/:id',
+        name: RouteName.users_update,
+        component: () => import('../views/users/UserEdit.vue')
+      },
+      {
         path: '/users',
         name: RouteName.users,
         component: () => import('@/views/users/UsersIndex.vue')
@@ -81,6 +91,10 @@ const routes: RouteRecordRaw[] = [
         path: '/company/create',
         name: RouteName.company_create,
         component: () => import('@/views/company/CreateCompany.vue')
+      },
+      {
+        path: '/payment',
+        component: () => import('@/views/payment/PaymentIndex.vue')
       }
     ]
   },
@@ -90,7 +104,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/auth/LoginView.vue')
   },
   {
-    path: '/register',
+    path: '/register/:reference',
     name: RouteName.register,
     component: () => import('@/views/auth/RegisterView.vue')
   }
