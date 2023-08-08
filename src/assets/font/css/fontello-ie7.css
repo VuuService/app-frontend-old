@@ -1,4 +1,5 @@
-[class^="vuu-"], [class*=" vuu-"] {
+[class^='vuu-'],
+[class*=' vuu-'] {
   font-family: 'fontello';
   font-style: normal;
   font-weight: normal;
@@ -10,46 +11,132 @@
   /* font-size: 120%; */
 }
 
-.vuu-account { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe800;&nbsp;'); }
-.vuu-account-group { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe801;&nbsp;'); }
-.vuu-account-group-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe802;&nbsp;'); }
-.vuu-account-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe803;&nbsp;'); }
-.vuu-home { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe804;&nbsp;'); }
-.vuu-home-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe805;&nbsp;'); }
-.vuu-plus { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe806;&nbsp;'); }
-.vuu-map-marker { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe807;&nbsp;'); }
-.vuu-map-marker-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe808;&nbsp;'); }
-.vuu-phone-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe809;&nbsp;'); }
-.vuu-phone { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80a;&nbsp;'); }
-.vuu-at { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80b;&nbsp;'); }
-.vuu-cart-plus { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80c;&nbsp;'); }
-.vuu-tools { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80d;&nbsp;'); }
-.vuu-warehouse { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80e;&nbsp;'); }
-.vuu-bank-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe80f;&nbsp;'); }
-.vuu-bank { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe810;&nbsp;'); }
-.vuu-search { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe811;&nbsp;'); }
-.vuu-delete { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe812;&nbsp;'); }
-.vuu-delete-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe813;&nbsp;'); }
-.vuu-pencil-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe814;&nbsp;'); }
-.vuu-pencil { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe815;&nbsp;'); }
-.vuu-settings-helper { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe816;&nbsp;'); }
-.vuu-cog { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe817;&nbsp;'); }
-.vuu-cog-alt { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe818;&nbsp;'); }
-.vuu-right-arrow { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe819;&nbsp;'); }
-.vuu-left-arrow { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81a;&nbsp;'); }
-.vuu-account-multiple-plus { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81b;&nbsp;'); }
-.vuu-account-multiple-plus-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81c;&nbsp;'); }
-.vuu-account-plus { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81d;&nbsp;'); }
-.vuu-account-plus-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81e;&nbsp;'); }
-.vuu-account-tie { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe81f;&nbsp;'); }
-.vuu-account-tie-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe820;&nbsp;'); }
-.vuu-box { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe821;&nbsp;'); }
-.vuu-filter { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe822;&nbsp;'); }
-.vuu-filter-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe823;&nbsp;'); }
-.vuu-sort { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe824;&nbsp;'); }
-.vuu-tag-plus { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe825;&nbsp;'); }
-.vuu-tag-plus-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe826;&nbsp;'); }
-.vuu-tag { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe827;&nbsp;'); }
-.vuu-tag-outline { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe828;&nbsp;'); }
-.vuu-copy { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xe829;&nbsp;'); }
-.vuu-whatsapp { *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf232;&nbsp;'); }
+.vuu-account {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe800;&nbsp;');
+}
+.vuu-account-group {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe801;&nbsp;');
+}
+.vuu-account-group-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe802;&nbsp;');
+}
+.vuu-account-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe803;&nbsp;');
+}
+.vuu-home {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe804;&nbsp;');
+}
+.vuu-home-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe805;&nbsp;');
+}
+.vuu-plus {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe806;&nbsp;');
+}
+.vuu-map-marker {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe807;&nbsp;');
+}
+.vuu-map-marker-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe808;&nbsp;');
+}
+.vuu-phone-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe809;&nbsp;');
+}
+.vuu-phone {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80a;&nbsp;');
+}
+.vuu-at {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80b;&nbsp;');
+}
+.vuu-cart-plus {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80c;&nbsp;');
+}
+.vuu-tools {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80d;&nbsp;');
+}
+.vuu-warehouse {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80e;&nbsp;');
+}
+.vuu-bank-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe80f;&nbsp;');
+}
+.vuu-bank {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe810;&nbsp;');
+}
+.vuu-search {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe811;&nbsp;');
+}
+.vuu-delete {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe812;&nbsp;');
+}
+.vuu-delete-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe813;&nbsp;');
+}
+.vuu-pencil-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe814;&nbsp;');
+}
+.vuu-pencil {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe815;&nbsp;');
+}
+.vuu-settings-helper {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe816;&nbsp;');
+}
+.vuu-cog {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe817;&nbsp;');
+}
+.vuu-cog-alt {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe818;&nbsp;');
+}
+.vuu-right-arrow {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe819;&nbsp;');
+}
+.vuu-left-arrow {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81a;&nbsp;');
+}
+.vuu-account-multiple-plus {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81b;&nbsp;');
+}
+.vuu-account-multiple-plus-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81c;&nbsp;');
+}
+.vuu-account-plus {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81d;&nbsp;');
+}
+.vuu-account-plus-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81e;&nbsp;');
+}
+.vuu-account-tie {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe81f;&nbsp;');
+}
+.vuu-account-tie-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe820;&nbsp;');
+}
+.vuu-box {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe821;&nbsp;');
+}
+.vuu-filter {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe822;&nbsp;');
+}
+.vuu-filter-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe823;&nbsp;');
+}
+.vuu-sort {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe824;&nbsp;');
+}
+.vuu-tag-plus {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe825;&nbsp;');
+}
+.vuu-tag-plus-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe826;&nbsp;');
+}
+.vuu-tag {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe827;&nbsp;');
+}
+.vuu-tag-outline {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe828;&nbsp;');
+}
+.vuu-copy {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe829;&nbsp;');
+}
+.vuu-whatsapp {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xf232;&nbsp;');
+}

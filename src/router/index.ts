@@ -27,6 +27,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   if (loggeduser && !user.company && routeTo.path != '/company/create') {
     router.push({ name: RouteName.company_create })
   }
+
   return next()
 })
 export default router
