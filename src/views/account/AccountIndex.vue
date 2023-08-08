@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { RouteName } from '@/enums/RouteName'
-import { userStore } from '@/stores/AuthStore'
 import { PermissionName } from '@/enums/PermissionName'
-import { isGranted } from '@/api/UserApi'
+import { isGranted, isRole } from '@/api/UserApi'
 import UserProfile from '@/views/account/UserProfile.vue'
-
-const { user } = userStore()
+import { RoleName } from '@/enums/RoleName'
+import { RouteName } from '@/enums/RouteName'
 </script>
 
 <template>
@@ -19,15 +17,12 @@ const { user } = userStore()
       >
         <i class="vuu-account-outline text-2xl"></i>
         <h5 class="font-bold tracking-tight text-gray-900 text-center dark:text-white">
-          {{
-            isGranted(PermissionName.admin_op) || isGranted(PermissionName.seller_sales)
-              ? 'Kullanıcılar'
-              : 'Personel'
-          }}
+          {{ isRole([RoleName.admin, RoleName.seller]) ? 'Kullanıcılar' : 'Personel' }}
         </h5></router-link
       >
 
       <router-link
+        v-if="false"
         :to="{ name: RouteName.users }"
         class="inline-flex items-center justify-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
@@ -35,6 +30,7 @@ const { user } = userStore()
         <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Satıcı</h5>
       </router-link>
       <router-link
+        v-if="false"
         :to="{ name: RouteName.users }"
         class="inline-flex items-center justify-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       >
