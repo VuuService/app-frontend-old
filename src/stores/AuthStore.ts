@@ -1,25 +1,46 @@
-import { computed, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import AppAxios from '@/utils/AppAxios'
 import type { AxiosResponse } from 'axios'
 import type { UserInterface } from '@/api/UserApi'
+import { userData } from '@/api/UserApi'
 import router from '@/router'
+import { RouteName } from '@/enums/RouteName'
 
 export const userStore = defineStore('user', () => {
-  const state = localStorage.getItem('user')
-    ? ref(JSON.parse(localStorage.getItem('user') as string))
-    : ref()
-  const isAuth = computed(() => state.value?.token?.access_token != null)
-  const getAccessToken = computed(() => state.value?.token?.access_token)
-  const user = computed((): UserInterface => state.value)
-  const permissions = computed(() => state.value.permissions)
-  const company = computed(() => state.value?.company)
+  const User = localStorage.getItem('user')
+    ? reactive<{ value: UserInterface }>({
+        value: JSON.parse(localStorage.getItem('user') as string) as UserInterface
+      })
+    : reactive<{ value: UserInterface }>({ value: userData })
+  const isAuth = computed(() => User.value.token?.access_token != null)
+  const getAccessToken = computed(() => User.value.token?.access_token)
+  const user = computed((): UserInterface => User.value)
+  const permissions = computed(() => User.value.permissions)
+  const company = computed(() => User.value.company)
+  const exp = computed(() => User.value.exp)
 
   async function login(data: any) {
     return await AppAxios.post('/users/login', data)
       .then((r: AxiosResponse<UserInterface>) => {
-        state.value = r.data
+        User.value = r.data
         localStorage.setItem('user', JSON.stringify(r.data))
+        return { success: true }
+      })
+      .catch((e) => {
+        console.log(e)
+        return { success: false }
+      })
+  }
+
+  async function register(data: any) {
+    const key = data.key
+    delete data.key
+    return await AppAxios.post('/users/register/' + key, data)
+      .then((r: AxiosResponse<UserInterface>) => {
+        User.value = r.data
+        localStorage.setItem('user', JSON.stringify(r.data))
+        console.log(r.data)
         return { success: true }
       })
       .catch((e) => {
@@ -30,14 +51,25 @@ export const userStore = defineStore('user', () => {
 
   async function logout() {
     localStorage.removeItem('user')
-    state.value = null
-    router.go('/login')
+    User.value = userData
+    router.go({ name: RouteName.login })
   }
 
   function updateUser(data: UserInterface) {
-    state.value = data
+    User.value = data
     localStorage.setItem('user', JSON.stringify(data))
   }
 
-  return { user, isAuth, login, getAccessToken, permissions, company, updateUser, logout }
+  return {
+    user,
+    isAuth,
+    login,
+    register,
+    getAccessToken,
+    permissions,
+    company,
+    updateUser,
+    logout,
+    exp
+  }
 })
