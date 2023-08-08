@@ -23,3 +23,9 @@ export async function createReference(data: CreateReferenceInterface): Promise<R
     (r: AxiosResponse<ReferenceInterface>) => r.data
   )
 }
+
+export async function getReference(ReferenceCode: string): Promise<ReferenceInterface> {
+  return await AppAxios.get('/references/' + ReferenceCode).then(
+    (r: AxiosResponse<ReferenceInterface>) => r.data
+  )
+}
