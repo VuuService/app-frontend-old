@@ -1,27 +1,64 @@
 import { userStore } from '@/stores/AuthStore'
 import type { CompanyInterface } from '@/api/CompanyApi'
+import AppAxios from '@/utils/AppAxios'
+import type { AxiosResponse } from 'axios'
 
 export interface UserInterface {
-  firstName: string
-  lastName: string
-  email: string
-  password: string
-  role: string
-  title: string
+  _id?: string
+  exp: number
+  firstName: string | null
+  lastName: string | null
+  email: string | null
+  password?: string | null
+  repassword?: string | null
+  role: string | null
+  title?: string | null
+  phone: string | null
   permissions: string[]
-  token: {
+  status?: boolean
+  token?: {
     access_token: string
     refresh_token: string
   }
-  company: CompanyInterface
+  company: CompanyInterface | null
 }
 
-const { permissions, user } = userStore()
+export const userData: UserInterface = {
+  exp: Date.now(),
+  firstName: null,
+  lastName: null,
+  email: null,
+  role: null,
+  phone: null,
+  permissions: [],
+  company: null
+}
+
+export async function getUsers(): Promise<UserInterface[]> {
+  return await AppAxios.get('/users').then((r: AxiosResponse<UserInterface[]>) => r.data)
+}
+
+export async function getUser(id: string): Promise<UserInterface> {
+  return await AppAxios.get('/users/edit/' + id).then((r: AxiosResponse<UserInterface>) => r.data)
+}
 
 export function isGranted(permission: string) {
+  const { permissions } = userStore()
+
   return permissions.includes(permission)
 }
 
+export async function updateUser(id: string, user: UserInterface): Promise<UserInterface> {
+  return await AppAxios.put('/users/edit/' + id, user).then(
+    (r: AxiosResponse<UserInterface>) => r.data
+  )
+}
+
 export function isRole(role: string[]) {
-  return role.includes(user.role)
+  const { user } = userStore()
+
+  if (user.role) {
+    return role.includes(user.role)
+  }
+  return false
 }
