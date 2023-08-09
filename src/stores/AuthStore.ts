@@ -36,11 +36,11 @@ export const userStore = defineStore('user', () => {
   async function register(data: any) {
     const key = data.key
     delete data.key
+    delete data.exp
     return await AppAxios.post('/users/register/' + key, data)
       .then((r: AxiosResponse<UserInterface>) => {
         User.value = r.data
         localStorage.setItem('user', JSON.stringify(r.data))
-        console.log(r.data)
         return { success: true }
       })
       .catch((e) => {
@@ -52,7 +52,7 @@ export const userStore = defineStore('user', () => {
   async function logout() {
     localStorage.removeItem('user')
     User.value = userData
-    router.go({ name: RouteName.login })
+    router.push({ name: RouteName.login })
   }
 
   function updateUser(data: UserInterface) {
