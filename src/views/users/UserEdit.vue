@@ -2,10 +2,10 @@
   <breadcrumb-view></breadcrumb-view>
 
   <form class="px-2 py-4" @submit.prevent="submit">
-    <input-view v-model="userData.firstName" placeholder="İsim"></input-view>
-    <input-view v-model="userData.lastName" placeholder="Soyisim"></input-view>
-    <input-view v-model="userData.email" placeholder="E-Posta" type="email"></input-view>
-    <input-view v-model="userData.phone" placeholder="Telefon" type="tel"></input-view>
+    <input-view v-model="user.firstName" placeholder="İsim"></input-view>
+    <input-view v-model="user.lastName" placeholder="Soyisim"></input-view>
+    <input-view v-model="user.email" placeholder="E-Posta" type="email"></input-view>
+    <input-view v-model="user.phone" placeholder="Telefon" type="tel"></input-view>
     <div v-if="isRole([RoleName.admin])" class="mb-4">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="role"
         >Üye tipi seçin</label
@@ -79,7 +79,7 @@ import ToggleButton from '@/components/ToggleButton.vue'
 import { PermissionName } from '@/enums/PermissionName'
 import { ModuleName } from '@/enums/ModuleName'
 import { RoleName } from '@/enums/RoleName'
-import { getUser, isRole, updateUser, type UserInterface } from '@/api/UserApi'
+import { getUser, isRole, updateUser, userData, type UserInterface } from '@/api/UserApi'
 import InputView from '@/components/InputView.vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
@@ -88,15 +88,8 @@ import { RouteName } from '@/enums/RouteName'
 const selectedRole = ref<RolesInterface[]>([])
 const selectedPermissions = ref<string[]>([])
 const role = ref()
-const userData = ref<UserInterface>({
-  email: null,
-  phone: null,
-  firstName: null,
-  lastName: null,
-  permissions: [],
-  title: null,
-  role: null,
-  company: null
+const user = ref<UserInterface>({
+  ...userData
 })
 
 const disabledRoles = (role: RolesInterface) => {
@@ -118,9 +111,9 @@ const changeRole = (role: RolesInterface) => {
 }
 
 const submit = async () => {
-  const data: UserInterface = { ...userData.value }
+  const data: UserInterface = { ...user.value }
   if (selectedRole.value.length > 0) {
-    data.title = selectedRole.value[0].name
+    data.title = selectedRole.value[0]?.name
   }
   if (role.value) {
     data.role = role.value
@@ -130,18 +123,22 @@ const submit = async () => {
   if (data.permissions) {
     data.permissions = selectedPermissions.value
   }
-  await updateUser(route.params.id, data).then(() => router.push({ name: RouteName.users }))
+  await updateUser(route.params.id as string, data).then(() =>
+    router.push({ name: RouteName.users })
+  )
 }
 const route = useRoute()
 onMounted(async () => {
   roles.value = await getRoles()
   console.log(roles.value)
   if (route.params.id) {
-    userData.value = await getUser(route.params.id)
-    role.value = userData.value.role.toString().toLowerCase()
-    const sr = roles.value.find((x) => userData.value.title === x.name)
-    selectedRole.value.push(sr)
-    selectedPermissions.value = userData.value.permissions
+    user.value = await getUser(route.params.id as string)
+    role.value = user.value.role?.toString().toLowerCase()
+    const sr = roles.value.find((x) => user.value.title === x.name)
+    if (sr) {
+      selectedRole.value.push(sr)
+    }
+    selectedPermissions.value = user.value.permissions
   }
 })
 </script>
