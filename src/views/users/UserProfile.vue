@@ -39,6 +39,7 @@
           <a
             class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             role="button"
+            @click="modal.show()"
             >Sil</a
           >
         </li>
@@ -83,35 +84,56 @@
       </div>
     </div>
   </div>
+  <static-modal @modal="(v: ModalInterface) => (modal = v)">
+    <template #header>Silmek istediğinize emin misiniz?</template>
+    {{ user.firstName }} {{ user.lastName }} silinecek.
+    <template #footer>
+      <button
+        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="submit"
+        @click="deleteUser"
+      >
+        Sil
+      </button>
+      <button
+        class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
+        type="button"
+        @click="modal.hide()"
+      >
+        Vazgeç
+      </button>
+    </template>
+  </static-modal>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import type { UserInterface } from '@/api/UserApi'
-import { getUser, isGranted } from '@/api/UserApi'
+import { destroyUser, getUser, isGranted, userData } from '@/api/UserApi'
 import { useRoute } from 'vue-router'
 import { randomInt } from '@/utils/math'
-import type { DropdownInterface, DropdownOptions } from 'flowbite'
+import type { DropdownInterface, DropdownOptions, ModalInterface } from 'flowbite'
 import { Dropdown } from 'flowbite'
 import { PermissionName } from '@/enums/PermissionName'
 import { ModuleName } from '@/enums/ModuleName'
 import { RouteName } from '@/enums/RouteName'
+import StaticModal from '@/components/StaticModal.vue'
+import router from '@/router'
 
+const modal = ref()
 const menu = ref<HTMLElement>()
 const button = ref<HTMLElement>()
 const dropdown = ref<DropdownInterface>()
 
 const route = useRoute()
 
-const user = ref<UserInterface>({
-  email: null,
-  phone: null,
-  firstName: null,
-  lastName: null,
-  permissions: [],
-  title: null,
-  role: null,
-  company: null
-})
+const user = ref<UserInterface>({ ...userData })
+
+const deleteUser = () => {
+  destroyUser(user.value._id).then(() => {
+    modal.value.hide()
+    router.push({ name: RouteName.users })
+  })
+}
 
 onMounted(async () => {
   if (route.params?.id) {
