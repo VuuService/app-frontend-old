@@ -3,6 +3,7 @@
   "include": [
     "env.d.ts",
     "src/**/*",
+    "src/**/**/*",
     "src/**/*.vue",
     "src/**/*.ts"
   ],
@@ -10,6 +11,9 @@
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
     "composite": true,
     "baseUrl": ".",
     "paths": {

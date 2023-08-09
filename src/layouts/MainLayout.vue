@@ -4,24 +4,13 @@ import NavBar from '@/layouts/NavBar.vue'
 </script>
 <template>
   <NavBar></NavBar>
-  <div class="py-16 mt-2">
-    <router-view v-slot="{ Component }">
-      <transition name="fade">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-  </div>
+  <router-view v-slot="{ Component, route }">
+    <transition mode="out-in" name="fade">
+      <div :key="route.path" class="py-16 mt-2">
+        <component :is="Component"></component>
+      </div>
+    </transition>
+  </router-view>
 
   <BottomNavigation></BottomNavigation>
 </template>
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.1s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

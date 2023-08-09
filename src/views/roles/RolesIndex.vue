@@ -36,7 +36,7 @@
       <ul role="list">
         <li>
           <router-link
-            v-if="permission"
+            v-if="isGranted(PermissionName.roles_create)"
             :to="{ name: RouteName.roles_create }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
@@ -61,10 +61,10 @@
           </router-link>
         </li>
 
-        <li v-for="i in 4" :key="i">
+        <li v-for="role in roles" :key="role._id">
           <router-link
+            :to="{ name: RouteName.roles_update, params: { name: role.name, id: role._id } }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
-            to="/account"
           >
             <div class="flex-shrink-0">
               <div
@@ -74,8 +74,8 @@
               </div>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                Görev Tanımı {{ i }}
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white capitalize">
+                {{ role.name }}
               </p>
             </div>
             <div
@@ -92,7 +92,14 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { isGranted } from '@/api/UserApi'
+import { PermissionName } from '@/enums/PermissionName'
+import type { RolesInterface } from '@/api/RolesApi'
+import { getRoles } from '@/api/RolesApi'
 
-const permission = ref(true)
+const roles = ref<RolesInterface[]>()
+onMounted(async () => {
+  roles.value = await getRoles()
+})
 </script>

@@ -90,7 +90,4 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { ref } from 'vue'
-
-const permission = ref(true)
 </script>
