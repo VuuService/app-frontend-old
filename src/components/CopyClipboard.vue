@@ -17,7 +17,7 @@
           "
           target="_blank"
         >
-          <tooltip-button tooltip-text="Whatsapp">
+          <tooltip-button :options="options" tooltipText="Whatsapp">
             <template #ButtonText><i class="vuu-whatsapp text-lg">Whatsapp</i></template>
           </tooltip-button>
         </a>

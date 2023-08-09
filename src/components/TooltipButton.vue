@@ -22,13 +22,12 @@ import { Tooltip } from 'flowbite'
 import { onMounted, ref } from 'vue'
 import { randomInt } from '@/utils/math'
 
-const props = withDefaults(defineProps<any>(), {
-  tooltipText: undefined,
-  options: {
-    placement: 'auto',
-    triggerType: 'hover'
-  }
-})
+interface Props {
+  tooltipText: string
+  options: TooltipOptions
+}
+
+const props = withDefaults(defineProps<Props>(), {})
 const id = ref<number>(randomInt(1, 9999 * 9999))
 const targetEl = ref<HTMLElement>()
 const triggerEl = ref<HTMLElement>()
