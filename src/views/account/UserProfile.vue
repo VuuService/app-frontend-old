@@ -53,6 +53,9 @@
   <div class="flex flex-col items-center pb-10">
     <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200/300" />
     <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+      {{ user.company.name }}
+    </h5>
+    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
       {{ user.firstName + ' ' + user.lastName }}
     </h5>
     <span v-if="user?.title" class="text-sm text-gray-500 dark:text-gray-400">{{
