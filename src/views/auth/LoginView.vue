@@ -1,33 +1,25 @@
-<script xlang="ts" setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/AuthStore'
+import { useRouter } from 'vue-router'
+import { userStore } from '@/stores/AuthStore'
+import { RouteName } from '@/enums/RouteName'
 
 const showSuccessMessage = ref(false)
 const showErrorMessage = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
 
-const { login } = useAuthStore()
+const { login } = userStore()
 
 const router = useRouter()
 
 const LoginData = ref({
-  username: '',
-  password: ''
+  email: 'ayunus155@gmail.com',
+  password: 'turkey'
 })
+
 async function submit() {
-  const result = await login(LoginData.value)
-  if (result.isError) {
-    errorMessage.value = result.msg
-    showErrorMessage.value = true
-    showSuccessMessage.value = false
-  } else {
-    successMessage.value = result.msg
-    showSuccessMessage.value = true
-    showErrorMessage.value = false
-    router.push('/')
-  }
+  await login(LoginData.value).then(() => router.push({ name: RouteName.account }))
 }
 </script>
 
@@ -36,7 +28,7 @@ async function submit() {
     <div class="border rounded-lg shadow-md w-96 p-6">
       <!-- Logo Ekleme -->
       <div class="mb-6 text-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" alt="Logo" class="w-20 mx-auto" />
+        <img alt="Logo" class="w-20 mx-auto" src="https://flowbite.com/docs/images/logo.svg" />
       </div>
 
       <div
@@ -56,32 +48,32 @@ async function submit() {
 
       <form @submit.prevent="submit">
         <div class="mb-4">
-          <label for="email" class="block text-gray-700 font-bold mb-2">Kullanıcı Adı</label>
+          <label class="block text-gray-700 font-bold mb-2" for="email">Kullanıcı Adı</label>
           <input
-            type="text"
-            id="username"
-            v-model="LoginData.username"
+            id="email"
+            v-model="LoginData.email"
             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            type="text"
           />
         </div>
         <div class="mb-4">
-          <label for="password" class="block text-gray-700 font-bold mb-2">Şifre</label>
+          <label class="block text-gray-700 font-bold mb-2" for="password">Şifre</label>
           <input
-            type="password"
             id="password"
             v-model="LoginData.password"
             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+            type="password"
           />
         </div>
         <button
-          type="submit"
           class="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-900 text-white font-bold py-2 px-4 rounded-md"
+          type="submit"
         >
           Giriş Yap
         </button>
       </form>
-      <div class="text-center mt-4">
-        <a href="#" class="text-blue-500 hover:underline" @click="">Şifreni mi unuttun?</a>
+      <div v-if="showSuccessMessage" class="text-center mt-4">
+        <a class="text-blue-500 hover:underline" href="#">Şifreni mi unuttun?</a>
       </div>
     </div>
   </div>

@@ -1,44 +1,75 @@
-import { computed, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { GetProfileFn, LoginFn } from '@/api/authApi'
-import { api } from '@/api/backendService'
+import AppAxios from '@/utils/AppAxios'
+import type { AxiosResponse } from 'axios'
+import type { UserInterface } from '@/api/UserApi'
+import { userData } from '@/api/UserApi'
+import router from '@/router'
+import { RouteName } from '@/enums/RouteName'
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref({})
-  const token = ref(localStorage.getItem('token'))
-  const isAuth = computed(() => !user.value)
+export const userStore = defineStore('user', () => {
+  const User = localStorage.getItem('user')
+    ? reactive<{ value: UserInterface }>({
+        value: JSON.parse(localStorage.getItem('user') as string) as UserInterface
+      })
+    : reactive<{ value: UserInterface }>({ value: userData })
+  const isAuth = computed(() => User.value.token?.access_token != null)
+  const getAccessToken = computed(() => User.value.token?.access_token)
+  const user = computed((): UserInterface => User.value)
+  const permissions = computed(() => User.value.permissions)
+  const company = computed(() => User.value.company)
+  const exp = computed(() => User.value.exp)
 
-  async function login(LoginData: any) {
-    const bearer = await LoginFn(LoginData)
-
-    if (bearer != null) {
-      if (bearer.error) {
-        console.log(bearer.error)
-        return { isError: true, msg: bearer.error }
-      }
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${bearer.access_token}`
-      localStorage.setItem('token', bearer.access_token)
-
-      await getProfile()
-
-      return { isError: false, msg: 'Giriş başarılı.' }
-    }
-
-    return { isError: true, msg: 'Giriş yaparken bir hata oluştu.' }
+  async function login(data: any) {
+    return await AppAxios.post('/users/login', data)
+      .then((r: AxiosResponse<UserInterface>) => {
+        User.value = r.data
+        localStorage.setItem('user', JSON.stringify(r.data))
+        return { success: true }
+      })
+      .catch((e) => {
+        console.log(e)
+        return { success: false }
+      })
   }
 
-  function logout() {
-    localStorage.removeItem('token')
+  async function register(data: any) {
+    const key = data.key
+    delete data.key
+    delete data.exp
+    return await AppAxios.post('/users/register/' + key, data)
+      .then((r: AxiosResponse<UserInterface>) => {
+        User.value = r.data
+        localStorage.setItem('user', JSON.stringify(r.data))
+        return { success: true }
+      })
+      .catch((e) => {
+        console.log(e)
+        return { success: false }
+      })
   }
 
-  async function getProfile() {
-    user.value = await GetProfileFn()
-
-    return user.value
+  async function logout() {
+    localStorage.removeItem('user')
+    User.value = userData
+    router.push({ name: RouteName.login })
   }
 
-  function register() {}
+  function updateUser(data: UserInterface) {
+    User.value = data
+    localStorage.setItem('user', JSON.stringify(data))
+  }
 
-  return { user, isAuth, login, logout, register, getProfile }
+  return {
+    user,
+    isAuth,
+    login,
+    register,
+    getAccessToken,
+    permissions,
+    company,
+    updateUser,
+    logout,
+    exp
+  }
 })
