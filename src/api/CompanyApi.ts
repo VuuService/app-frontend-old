@@ -10,7 +10,7 @@ export interface CompanyInterface {
 }
 
 export async function saveCompany(company: CompanyInterface) {
-  return await AppAxios.post('companies/create', company)
+  return await AppAxios.post('/companies/create', company)
     .then((r: AxiosResponse<UserInterface>) => {
       const { updateUser } = userStore()
       updateUser(r.data)
