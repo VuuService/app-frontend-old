@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-gray-50 dark:bg-gray-900">
+  <section v-if="reference" class="bg-gray-50 dark:bg-gray-900">
     <div
       class="w-full flex flex-wrap overflow-x-hidden flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
@@ -171,30 +171,21 @@
       </div>
     </div>
   </section>
+  <div v-else>Davetiye bulunamadı. Yöneticinize başvurun.</div>
 </template>
 <script lang="ts" setup>
 import { onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getReference, type ReferenceInterface } from '@/api/ReferencesApi'
 import type { UserInterface } from '@/api/UserApi'
+import { userData } from '@/api/UserApi'
 import { userStore } from '@/stores/AuthStore'
 import router from '@/router'
 import { RoleName } from '@/enums/RoleName'
 
 const route = useRoute()
 const reference = ref<ReferenceInterface>()
-const user = ref<UserInterface>({
-  email: null,
-  phone: null,
-  password: null,
-  repassword: null,
-  firstName: null,
-  lastName: null,
-  permissions: [],
-  title: null,
-  role: null,
-  company: null
-})
+const user = ref<UserInterface>({ ...userData })
 const isUser = ref<boolean>(RoleName.user === reference.value?.box?.role)
 const status = ref<boolean>(true)
 const statusCheck = () => {
@@ -219,7 +210,9 @@ const save = async () => {
     if (reference.value?.company) {
       userData.company = reference.value.company
     }
-    await register({ ...userData, key: reference.value?.key }).then(() => router.go('/'))
+    await register({ ...userData, key: reference.value?.key }).then((r) => {
+      r.success ? router.push('/') : true
+    })
   }
 }
 onBeforeMount(async () => {
