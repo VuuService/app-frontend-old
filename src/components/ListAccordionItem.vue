@@ -20,14 +20,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const props = withDefaults(
-  defineProps<{
-    rotate?: number
-  }>(),
-  {
-    rotate: 90
-  }
-)
 //TODO Yukarıdaki propsun şu anda bir işlevi yok. tailwindde kullanılmayan cssler import edilmediği için yapılmak istenilen başarılı olamayacak gibi. İleriki süreçte tekrardan bakacağız.
 //TODO transition ve delay çalışmıyor onlara da bakılacak.
 

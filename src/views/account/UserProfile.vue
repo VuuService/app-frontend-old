@@ -75,10 +75,6 @@ const menu = ref<HTMLElement>()
 const button = ref<HTMLElement>()
 const dropdown = ref<DropdownInterface>()
 
-const show = () => {
-  dropdown.value?.show()
-}
-
 onMounted(() => {
   const options: DropdownOptions = {
     placement: 'bottom',

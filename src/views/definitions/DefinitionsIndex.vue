@@ -94,8 +94,6 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { GetDefinitionsFn } from '@/api/definitionApi'
 
-const permission = ref(true)
-
 const module = ref('')
 const route = useRoute()
 
