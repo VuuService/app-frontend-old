@@ -25,7 +25,7 @@
       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       type="submit"
     >
-      Submit
+      Kaydet
     </button>
   </form>
 </template>
@@ -33,25 +33,24 @@
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import InputView from '@/components/InputView.vue'
 import { onMounted, ref } from 'vue'
-import { type RolesCreateInterface, saveRole } from '@/api/RolesApi'
+import { getRole, RolesInterface, updateRole } from '@/api/RolesApi'
 import { ModuleName } from '@/enums/ModuleName'
 import ToggleButton from '@/components/ToggleButton.vue'
 import { PermissionName } from '@/enums/PermissionName'
-import { userStore } from '@/stores/AuthStore'
+import { useRoute } from 'vue-router'
 import router from '@/router'
-import { RouteName } from '@/enums/RouteName'
+
+const route = useRoute()
 
 const modules = Object.keys(ModuleName)
-const { user, company } = userStore()
-const role = ref<RolesCreateInterface>({ name: null, permissions: [], company: company._id })
+const role = ref<RolesInterface>({ name: null, company: null, permissions: [] })
 
 const submit = async () => {
-  await saveRole(role.value).then(() => router.push({ name: RouteName.roles }))
+  await updateRole(role.value).then(() => router.push('/roles'))
 }
-
-onMounted(() => {
-  if (user?.company?._id) {
-    role.value.company = user?.company?._id || undefined
+onMounted(async () => {
+  if (route.params?.id) {
+    role.value = await getRole(route.params.id)
   }
 })
 </script>

@@ -41,7 +41,7 @@
       <ul role="list">
         <li>
           <router-link
-            v-if="permission"
+            v-if="isGranted(PermissionName.users_create)"
             :to="{ name: RouteName.users_create }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
@@ -54,7 +54,13 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                Yeni Personel Oluştur
+                Yeni
+                {{
+                  isGranted(PermissionName.admin_op) || isGranted(PermissionName.seller_sales)
+                    ? 'Kullanıcı'
+                    : 'Personel'
+                }}
+                Oluştur
               </p>
             </div>
             <div
@@ -70,21 +76,26 @@
           </router-link>
         </li>
 
-        <li v-for="i in 4" :key="i">
+        <li v-for="(user, i) in users" :key="user._id">
           <router-link
+            :to="{
+              name: RouteName.users_view,
+              params: { fullname: user.firstName + '-' + user.lastName, id: user._id }
+            }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
-            to="/account"
           >
             <div class="flex-shrink-0">
               <img
+                :src="'https://picsum.photos/200/300?random=' + i"
                 alt="Neil image"
                 class="w-12 h-12 rounded-full"
-                src="https://picsum.photos/seed/picsum/200/300"
               />
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Neil Sims</p>
-              <p class="text-sm text-gray-500 truncate dark:text-gray-400">Muhasebeci</p>
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                {{ user.firstName }} {{ user.lastName }}
+              </p>
+              <p class="text-sm text-gray-500 truncate dark:text-gray-400">{{ user.title }}</p>
             </div>
             <div
               class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
@@ -103,9 +114,9 @@
   </div>
   <div class="grid grid-cols-2 gap-2 p-2">
     <router-link
+      v-if="isGranted(PermissionName.roles_read)"
       :to="{ name: RouteName.roles }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      href="#"
     >
       <i class="vuu-account-outline text-2xl"></i>
       <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Görev Tanımları</h5>
@@ -115,7 +126,13 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { ref } from 'vue'
+import { PermissionName } from '@/enums/PermissionName'
+import { getUsers, isGranted, type UserInterface } from '@/api/UserApi'
+import { onMounted, ref } from 'vue'
 
-const permission = ref(true)
+const users = ref<UserInterface[]>([])
+
+onMounted(async () => {
+  users.value = await getUsers()
+})
 </script>

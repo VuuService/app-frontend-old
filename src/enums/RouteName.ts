@@ -5,8 +5,11 @@ export enum RouteName {
   customers_create = 'customers_create',
   users = 'users',
   users_create = 'users_create',
+  users_view = 'users_view',
+  users_update = 'users_update',
   roles = 'roles',
   roles_create = 'roles_create',
+  roles_update = 'roles_update',
   stocks = 'stocks',
   stocks_create = 'stocks_create',
 
@@ -18,5 +21,9 @@ export enum RouteName {
 
   stocks_definitions = 'stocks_definitions',
   stocks_definitions_create = 'stocks_definitions_create',
-  sales = 'sales'
+  sales = 'sales',
+
+  company = 'company',
+  company_create = 'company_create',
+  not_found = 'not_fount'
 }
