@@ -54,6 +54,10 @@ export async function updateUser(id: string, user: UserInterface): Promise<UserI
   )
 }
 
+export async function destroyUser(id: string): Promise<any> {
+  AppAxios.delete('/users/destroy/' + id).then((r: AxiosResponse<any>) => r.data)
+}
+
 export function isRole(role: string[]) {
   const { user } = userStore()
 
