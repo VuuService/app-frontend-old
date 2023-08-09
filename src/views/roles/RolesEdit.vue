@@ -33,7 +33,7 @@
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import InputView from '@/components/InputView.vue'
 import { onMounted, ref } from 'vue'
-import { getRole, RolesInterface, updateRole } from '@/api/RolesApi'
+import { getRole, type RolesInterface, updateRole } from '@/api/RolesApi'
 import { ModuleName } from '@/enums/ModuleName'
 import ToggleButton from '@/components/ToggleButton.vue'
 import { PermissionName } from '@/enums/PermissionName'
@@ -50,7 +50,7 @@ const submit = async () => {
 }
 onMounted(async () => {
   if (route.params?.id) {
-    role.value = await getRole(route.params.id)
+    role.value = await getRole(route.params.id as string)
   }
 })
 </script>

@@ -3,7 +3,7 @@
     :id="'tooltipButton' + id"
     class="flex items-center px-3 py-2 text-xs font-medium text-gray-600 bg-gray-100 border-l border-gray-200 dark:border-gray-600 dark:text-gray-400 dark:bg-gray-800 hover:text-blue-700 dark:hover:text-white copy-to-clipboard-button"
     type="button"
-    @click="tooltip.show()"
+    @click="tooltip?.show()"
   >
     <slot name="ButtonText"></slot>
   </button>
@@ -22,14 +22,10 @@ import { Tooltip } from 'flowbite'
 import { onMounted, ref } from 'vue'
 import { randomInt } from '@/utils/math'
 
-interface Props {
-  options: TooltipOptions
-  tooltipText: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<any>(), {
+  tooltipText: undefined,
   options: {
-    placement: 'bottom',
+    placement: 'auto',
     triggerType: 'hover'
   }
 })
@@ -53,8 +49,8 @@ onMounted(() => {
     }
   }
 
-  targetEl.value = document.getElementById('tooltipContent' + id.value)
-  triggerEl.value = document.getElementById('tooltipButton' + id.value)
+  targetEl.value = document.getElementById('tooltipContent' + id.value) || undefined
+  triggerEl.value = document.getElementById('tooltipButton' + id.value) || undefined
   tooltip.value = new Tooltip(targetEl.value, triggerEl.value, options)
 })
 </script>

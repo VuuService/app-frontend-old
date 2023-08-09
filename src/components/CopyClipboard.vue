@@ -50,7 +50,10 @@ const options: TooltipOptions = {
     setTimeout(() => {
       tooltip.value?.hide()
     }, 5000)
-    navigator.clipboard.writeText(document.getElementById('copyContent').innerText)
+    const clipboard = document.getElementById('copyContent')?.innerText
+    if (clipboard) {
+      navigator.clipboard.writeText(clipboard)
+    }
   }
 }
 </script>

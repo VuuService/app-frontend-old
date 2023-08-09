@@ -3,10 +3,10 @@ import type { CompanyInterface } from '@/api/CompanyApi'
 import type { AxiosResponse } from 'axios'
 
 export interface RolesInterface {
-  _id: string
-  name: string
+  _id?: string
+  name: string | null
   permissions: string[]
-  company?: CompanyInterface
+  company?: CompanyInterface | null
 }
 
 export interface RolesCreateInterface {

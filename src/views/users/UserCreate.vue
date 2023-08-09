@@ -30,7 +30,7 @@
               :key="role._id"
               v-model="selectedRole"
               :disabled="disabledRoles(role)"
-              :placeholder="role.name"
+              :placeholder="role.name as string"
               :value="role"
               v-on:change="changeRole(role)"
             ></toggle-button>
@@ -124,7 +124,7 @@ const submit = async () => {
   const data = reference.value
   if (data.box) {
     if (selectedRole.value.length > 0) {
-      data.box.title = selectedRole.value[0].name
+      data.box.title = selectedRole.value[0].name as string
     }
     if (role.value) {
       data.box.role = role.value

@@ -59,7 +59,7 @@
           </router-link>
         </li>
 
-        <li v-for="i in data" :key="i">
+        <li v-for="i in 5" :key="i">
           <router-link
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
             to="/account"
@@ -73,7 +73,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                {{ module }} Tanımı {{ i.key }}
+                {{ module }} Tanımı
               </p>
             </div>
             <div
@@ -90,17 +90,7 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { GetDefinitionsFn } from '@/api/definitionApi'
+import { ModuleName } from '@/enums/ModuleName'
 
-const module = ref('')
-const route = useRoute()
-
-module.value = route.query.type.toString()
-const data = ref([])
-
-GetDefinitionsFn(module.value).then((res) => {
-  data.value = res
-})
+const module = ModuleName.stocks
 </script>

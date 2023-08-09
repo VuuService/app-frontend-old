@@ -129,10 +129,12 @@ const route = useRoute()
 const user = ref<UserInterface>({ ...userData })
 
 const deleteUser = () => {
-  destroyUser(user.value._id).then(() => {
-    modal.value.hide()
-    router.push({ name: RouteName.users })
-  })
+  if (user.value?._id) {
+    destroyUser(user.value._id).then(() => {
+      modal.value.hide()
+      router.push({ name: RouteName.users })
+    })
+  }
 }
 
 onMounted(async () => {
@@ -147,8 +149,8 @@ onMounted(async () => {
     delay: 300
   }
 
-  menu.value = document.getElementById('dropdown')
-  button.value = document.getElementById('dropdownButton')
+  menu.value = document.getElementById('dropdown') || undefined
+  button.value = document.getElementById('dropdownButton') || undefined
   dropdown.value = new Dropdown(menu.value, button.value, options)
 })
 </script>

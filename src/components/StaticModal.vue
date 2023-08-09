@@ -45,7 +45,7 @@ onMounted(() => {
     backdropClasses: 'bg-gray-600 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
     closable: false
   }
-  staticModalElement.value = document.getElementById('staticModal' + id.value)
+  staticModalElement.value = document.getElementById('staticModal' + id.value) || undefined
   modal.value = new Modal(staticModalElement.value, modalOptions)
   emit('modal', modal.value)
 })

@@ -60,7 +60,7 @@ const userData = ref({
   password: null
 })
 const submit = () => {
-  user.login(userData.value).then(() => modal.value.hide())
+  user.login(userData.value).then(() => modal.value?.hide())
 }
 const sessionModalement = ref<HTMLElement>()
 const modal = ref<ModalInterface>()
@@ -71,9 +71,9 @@ onMounted(() => {
     backdropClasses: 'bg-gray-600 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
     closable: false
   }
-  sessionModalement.value = document.getElementById('sessionModal')
+  sessionModalement.value = document.getElementById('sessionModal') || undefined
   modal.value = new Modal(sessionModalement.value, modalOptions)
-  document.getElementById('app').addEventListener('click', function (event) {
+  document.getElementById('app')?.addEventListener('click', function (event) {
     if (modal.value) {
       const exp = user.exp + 1000 * 60 * 60 * 12
       if (Date.now() > exp) {

@@ -32,7 +32,7 @@ import { RouteName } from '@/enums/RouteName'
 const { user } = userStore()
 const fullName = ref<string>(user.firstName + ' ' + user.lastName)
 
-const company = ref<CompanyInterface>({ name: null, owner: user._id, phone: null })
+const company = ref<CompanyInterface>({ name: null, owner: user._id as string, phone: null })
 
 const submit = async () => {
   await saveCompany(company.value).then(() => {

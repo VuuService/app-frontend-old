@@ -29,7 +29,7 @@
               :key="role._id"
               v-model="selectedRole"
               :disabled="disabledRoles(role)"
-              :placeholder="role.name"
+              :placeholder="role.name as string"
               :value="role"
               v-on:change="changeRole(role)"
             ></toggle-button>

@@ -43,7 +43,11 @@ import { RouteName } from '@/enums/RouteName'
 
 const modules = Object.keys(ModuleName)
 const { user, company } = userStore()
-const role = ref<RolesCreateInterface>({ name: null, permissions: [], company: company._id })
+const role = ref<RolesCreateInterface>({
+  name: null,
+  permissions: [],
+  company: company?._id as string
+})
 
 const submit = async () => {
   await saveRole(role.value).then(() => router.push({ name: RouteName.roles }))

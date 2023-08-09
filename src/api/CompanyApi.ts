@@ -4,9 +4,10 @@ import type { AxiosResponse } from 'axios'
 import { userStore } from '@/stores/AuthStore'
 
 export interface CompanyInterface {
+  _id?: string
   name: string | null
   phone: string | null
-  owner: UserInterface | null | string
+  owner: string | null
 }
 
 export async function saveCompany(company: CompanyInterface) {

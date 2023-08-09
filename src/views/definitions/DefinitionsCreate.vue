@@ -47,20 +47,12 @@
 </template>
 <script lang="ts" setup>
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
-import { AddDefinitionFn } from '@/api/definitionApi'
-import { RouteName } from '@/enums/RouteName'
-
-const route = useRoute()
-const router = useRouter()
 
 const type = ref()
 const key = ref()
 
 function submit() {
-  AddDefinitionFn(route.query.type, key.value, type.value).then(() => {
-    router.push({ name: RouteName.definitions, query: { type: route.query.type } })
-  })
+  console.log('submit')
 }
 </script>

@@ -61,7 +61,7 @@
           </router-link>
         </li>
 
-        <li v-for="role in roles" :key="role">
+        <li v-for="role in roles" :key="role._id">
           <router-link
             :to="{ name: RouteName.roles_update, params: { name: role.name, id: role._id } }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
