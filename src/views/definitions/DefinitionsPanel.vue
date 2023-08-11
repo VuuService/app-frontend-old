@@ -1,11 +1,4 @@
 <template>
-  <input-view
-    v-for="definition in definitions.filter((x) => x.static)"
-    :key="definition._id"
-    v-model="definition.value"
-    :placeholder="definition.key"
-    :type="Object.values(InputType).find((x) => x === definition.type) ? definition.type : 'text'"
-  ></input-view>
   <div
     v-for="(definition, i) in selectedDefinitions"
     :key="i"
@@ -14,12 +7,12 @@
     <div class="mt-4">
       <label class="sr-only" for="underline_select">{{ i + 1 }}}. Özellik</label>
       <select
+        v-if="!definition.selectedDefinition?._id"
         id="underline_select"
         v-model="definition.selectedDefinition"
         class="flex-1 pt-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         @change="selectDefinition(i)"
       >
-        <option disabled selected value="null">{{ i + 1 }}. Özellik</option>
         <option v-for="definition in definitions" :key="definition._id" :value="definition._id">
           {{ definition.key }}
         </option>
@@ -35,7 +28,7 @@
           : 'text'
       "
     ></input-view>
-    <div class="absolute right-0 bottom-0">
+    <div v-if="!definition.selectedDefinition?._id" class="absolute right-0 bottom-0">
       <i class="vuu-delete"></i>
     </div>
   </div>
@@ -76,20 +69,13 @@ function selectDefinition(i: number) {
 }
 
 function getEmitData() {
-  const data = selectedDefinitions.value.filter((x) => x?.definition).map((x) => x.definition)
-  return [...definitions.value.filter((x) => x.static), ...data]
+  return selectedDefinitions.value.filter((x) => x?.definition).map((x) => x.definition)
 }
 
 watch(
   selectedDefinitions,
   () => {
-    emit('update:modelValue', getEmitData())
-  },
-  { deep: true }
-)
-watch(
-  definitions,
-  () => {
+    console.log(getEmitData())
     emit('update:modelValue', getEmitData())
   },
   { deep: true }
@@ -99,5 +85,12 @@ watch(
  */
 onMounted(async () => {
   definitions.value = await getDefinitions(props.module)
+
+  selectedDefinitions.value = definitions.value
+    .filter((x: DefinitionInterface) => x.static)
+    .map((x) => ({
+      selectedDefinition: x,
+      definition: { ...x }
+    }))
 })
 </script>
