@@ -4,7 +4,7 @@
   <form class="px-2 py-4" @submit.prevent="submit">
     <input-view v-model="user.firstName" placeholder="İsim"></input-view>
     <input-view v-model="user.lastName" placeholder="Soyisim"></input-view>
-    <input-view v-model="user.email" placeholder="E-Posta" type="email"></input-view>
+    <input-view v-model="user.email" placeholder="E-Posta" required type="email"></input-view>
     <input-view v-model="user.phone" placeholder="Telefon" type="tel"></input-view>
     <div v-if="isRole([RoleName.admin])" class="mb-4">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="role"
@@ -19,6 +19,11 @@
         <option v-for="role in Object.keys(RoleName)" :key="role" :value="role">{{ role }}</option>
       </select>
     </div>
+    <definitions-panel
+      :module="ModuleName.users"
+      :properties="user.properties || []"
+      @update:modelValue="(v: any) => (user.properties = v)"
+    ></definitions-panel>
     <Accordion class="mb-8 shadow">
       <accordion-panel>
         <accordion-header>Görev Tanımı</accordion-header>
@@ -82,6 +87,7 @@ import { RoleName } from '@/enums/RoleName'
 import { getUser, isRole, updateUser, userData, type UserInterface } from '@/api/UserApi'
 import InputView from '@/components/InputView.vue'
 import { useRoute } from 'vue-router'
+import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 import router from '@/router'
 import { RouteName } from '@/enums/RouteName'
 
@@ -130,7 +136,6 @@ const submit = async () => {
 const route = useRoute()
 onMounted(async () => {
   roles.value = await getRoles()
-  console.log(roles.value)
   if (route.params.id) {
     user.value = await getUser(route.params.id as string)
     role.value = user.value.role?.toString().toLowerCase()

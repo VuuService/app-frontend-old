@@ -77,13 +77,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/stocks/StocksDefinitionsCreate.vue')
       },
       {
-        path: '/definitions',
+        path: '/definitions/:module',
         name: RouteName.definitions,
         props: true,
         component: () => import('@/views/definitions/DefinitionsIndex.vue')
       },
       {
-        path: '/definitions/create',
+        path: '/definitions/:module/create',
         name: RouteName.definitions_create,
         component: () => import('@/views/definitions/DefinitionsCreate.vue')
       },

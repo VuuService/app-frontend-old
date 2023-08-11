@@ -14,7 +14,9 @@ export enum PermissionName {
   roles_update = 'roles:update',
   roles_delete = 'roles:delete',
   roles_save = 'roles:save',
-  seller_sales = 'seller:sales',
-  admin_op = 'admin:op',
-  company_create = 'company:create'
+  definitions_create = 'definitions:create',
+  definitions_read = 'definitions:read',
+  definitions_update = 'definitions:update',
+  definitions_delete = 'definitions:delete',
+  definitions_save = 'definitions:save'
 }
