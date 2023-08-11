@@ -2,6 +2,7 @@ import { userStore } from '@/stores/AuthStore'
 import type { CompanyInterface } from '@/api/CompanyApi'
 import AppAxios from '@/utils/AppAxios'
 import type { AxiosResponse } from 'axios'
+import type { DefinitionInterface } from '@/api/DefinitionsApi'
 
 export interface UserInterface {
   _id?: string
@@ -16,6 +17,7 @@ export interface UserInterface {
   phone: string | null
   permissions: string[]
   status?: boolean
+  properties: DefinitionInterface[]
   token?: {
     access_token: string
     refresh_token: string
@@ -31,7 +33,8 @@ export const userData: UserInterface = {
   role: null,
   phone: null,
   permissions: [],
-  company: null
+  company: null,
+  properties: []
 }
 
 export async function getUsers(): Promise<UserInterface[]> {
