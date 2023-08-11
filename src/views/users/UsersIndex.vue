@@ -136,7 +136,7 @@ import { PermissionName } from '@/enums/PermissionName'
 import { getUsers, isGranted, isRole, type UserInterface } from '@/api/UserApi'
 import { onMounted, ref } from 'vue'
 import { ModuleName } from '@/enums/ModuleName'
-import { RoleName } from '../../enums/RoleName'
+import { RoleName } from '@/enums/RoleName'
 
 const users = ref<UserInterface[]>([])
 
