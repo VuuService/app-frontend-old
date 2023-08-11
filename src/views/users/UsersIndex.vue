@@ -123,7 +123,9 @@
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
     >
       <i class="vuu-account-outline text-2xl"></i>
-      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Görev Tanımları</h5>
+      <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">
+        {{ isRole([RoleName.admin, RoleName.seller]) ? 'Kullanıcı' : 'Personel' }} Tanımları
+      </h5>
     </router-link>
   </div>
 </template>
