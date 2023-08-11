@@ -36,7 +36,7 @@
       <ul role="list">
         <li>
           <router-link
-            :to="{ name: RouteName.definitions_create, query: { type: module } }"
+            :to="{ name: RouteName.definitions_create, params: { module: route.params.module } }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
@@ -48,7 +48,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                Yeni {{ module }} Tanım Oluştur
+                Yeni {{ route.params.module }} Tanımı Oluştur
               </p>
             </div>
             <div
@@ -59,7 +59,7 @@
           </router-link>
         </li>
 
-        <li v-for="i in 5" :key="i">
+        <li v-for="definition in definitions" :key="definition._id">
           <router-link
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
             to="/account"
@@ -73,7 +73,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                {{ module }} Tanımı
+                {{ definition.key }}
               </p>
             </div>
             <div
@@ -88,9 +88,23 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import { type DefinitionInterface, getDefinitions } from '@/api/DefinitionsApi'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { ModuleName } from '@/enums/ModuleName'
+import router from '@/router'
+import { RouteName } from '@/enums/RouteName'
 
-const module = ModuleName.stocks
+const route = useRoute()
+
+const definitions = ref<DefinitionInterface[]>([])
+
+onMounted(async () => {
+  if (!Object.keys(ModuleName).includes(route.params.module as string)) {
+    router.push('/')
+  } else {
+    definitions.value = await getDefinitions(route.params.module as string)
+  }
+})
 </script>

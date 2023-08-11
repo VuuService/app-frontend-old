@@ -51,6 +51,7 @@ const definitions = ref<DefinitionInterface[]>([])
 
 interface Props {
   module: string
+  properties: DefinitionInterface[]
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -75,22 +76,34 @@ function getEmitData() {
 watch(
   selectedDefinitions,
   () => {
-    console.log(getEmitData())
     emit('update:modelValue', getEmitData())
   },
   { deep: true }
 )
-/**
- * TODO selectedDefinitionsun içine staticleri atalım sonra özellik ekle kısmında  içine pushlasak daha mantıklı gibi geldi bana hem propstan gelen id yi de oraya geri siktirleye biliriz. watch ile de değil direk computed ile miss :)
- */
+const first = ref<boolean>(true)
+watch(
+  props,
+  () => {
+    if (first.value) {
+      selectedDefinitions.value = props.properties.map((x) => ({
+        selectedDefinition: x,
+        definition: x
+      }))
+      const propertiesMutation = props.properties.map((x) => x._id)
+      selectedDefinitions.value = selectedDefinitions.value.concat(
+        definitions.value
+          .filter((x) => x.static && !propertiesMutation.includes(x._id))
+          .map((x) => ({
+            selectedDefinition: x,
+            definition: x
+          }))
+      )
+      first.value = false
+    }
+  },
+  { deep: true }
+)
 onMounted(async () => {
   definitions.value = await getDefinitions(props.module)
-
-  selectedDefinitions.value = definitions.value
-    .filter((x: DefinitionInterface) => x.static)
-    .map((x) => ({
-      selectedDefinition: x,
-      definition: { ...x }
-    }))
 })
 </script>
