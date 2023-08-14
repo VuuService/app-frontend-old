@@ -18,12 +18,11 @@ export enum RouteName {
 
   definitions = 'definitions',
   definitions_create = 'definitions_create',
+  definitions_update = 'definitions_update',
 
-  stocks_definitions = 'stocks_definitions',
-  stocks_definitions_create = 'stocks_definitions_create',
   sales = 'sales',
 
   company = 'company',
   company_create = 'company_create',
-  not_found = 'not_fount'
+  not_found = 'not_found'
 }
