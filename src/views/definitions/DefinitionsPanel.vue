@@ -4,20 +4,17 @@
     :key="i"
     class="flex justify-between items-center relative"
   >
-    <div class="mt-4">
-      <label class="sr-only" for="underline_select">{{ i + 1 }}}. Özellik</label>
-      <select
-        v-if="!definition.selectedDefinition?._id"
-        id="underline_select"
-        v-model="definition.selectedDefinition"
-        class="flex-1 pt-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        @change="selectDefinition(i)"
-      >
-        <option v-for="definition in definitions" :key="definition._id" :value="definition._id">
-          {{ definition.key }}
-        </option>
-      </select>
-    </div>
+    <underline-select
+      v-if="!definition.selectedDefinition?._id"
+      v-model="definition.selectedDefinition"
+      :class="{ 'w-1/3': !definition.selectedDefinition?._id }"
+      :placeholder="i + 1 + '. Özellik'"
+      @change="selectDefinition(i)"
+    >
+      <option v-for="definition in definitions" :key="definition._id" :value="definition._id">
+        {{ definition.key }}
+      </option>
+    </underline-select>
     <input-view
       v-if="definition?.definition"
       v-model="definition.definition.value"
@@ -27,12 +24,18 @@
           ? definition.definition.type
           : 'text'
       "
+      class="flex-1"
     ></input-view>
-    <div v-if="!definition.selectedDefinition?._id" class="absolute right-0 bottom-0">
+    <div
+      v-if="!definition.selectedDefinition?._id"
+      class="absolute right-0 bottom-0"
+      @click="deleteDefinition(i)"
+    >
       <i class="vuu-delete"></i>
     </div>
   </div>
   <button
+    v-if="definitions.length > 0"
     class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 my-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
     type="button"
     @click="selectedDefinitions.push({ selectedDefinition: null, definition: { ...definition } })"
@@ -46,6 +49,7 @@ import type { DefinitionInterface } from '@/api/DefinitionsApi'
 import { definition, getDefinitions } from '@/api/DefinitionsApi'
 import InputView from '@/components/InputView.vue'
 import { InputType } from '@/enums/InputType'
+import UnderlineSelect from '@/components/UnderlineSelect.vue'
 
 const definitions = ref<DefinitionInterface[]>([])
 
@@ -70,7 +74,18 @@ function selectDefinition(i: number) {
 }
 
 function getEmitData() {
-  return selectedDefinitions.value.filter((x) => x?.definition).map((x) => x.definition)
+  return selectedDefinitions.value
+    .filter((x) => x?.definition)
+    .map((x) => ({
+      _id: x.definition?._id,
+      key: x.definition?.key,
+      value: x.definition?.value,
+      type: x.definition?.type
+    }))
+}
+
+function deleteDefinition(i: number) {
+  selectedDefinitions.value = selectedDefinitions.value.filter((x, j) => i != j)
 }
 
 watch(
@@ -105,5 +120,13 @@ watch(
 )
 onMounted(async () => {
   definitions.value = await getDefinitions(props.module)
+  if (first.value && props.properties.length == 0 && definitions.value.length > 0) {
+    selectedDefinitions.value = definitions.value
+      .filter((x) => x.static)
+      .map((x) => ({
+        selectedDefinition: { ...x },
+        definition: { ...x }
+      }))
+  }
 })
 </script>
