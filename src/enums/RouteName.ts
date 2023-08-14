@@ -12,6 +12,7 @@ export enum RouteName {
   roles_update = 'roles_update',
   stocks = 'stocks',
   stocks_create = 'stocks_create',
+  stocks_update = 'stocks_update',
 
   login = 'login',
   register = 'register',
