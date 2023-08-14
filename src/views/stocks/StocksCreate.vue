@@ -4,8 +4,8 @@
     <input-view v-model="stock.name" placeholder="Ürün Adı"></input-view>
 
     <div class="grid grid-cols-2 gap-1 mt-4">
-      <radio-button v-model="stock.primary" :value="true" placeholder="Ana Ürün"></radio-button>
-      <radio-button v-model="stock.primary" :value="false" placeholder="Yedek Parça"></radio-button>
+      <radio-button v-model="stock.primary" :value="1" placeholder="Ana Ürün"></radio-button>
+      <radio-button v-model="stock.primary" :value="0" placeholder="Yedek Parça"></radio-button>
     </div>
 
     <add-period v-model="stock.period"></add-period>
@@ -83,11 +83,15 @@ const submit = async () => {
   data.status = isGranted(PermissionName.stocks_save)
   data.company = store.company?._id as string
   data.primary = !!data.primary
+  console.log(data)
   await createStocks(data).then((r) => {
     console.log(r.success, r.message)
   })
 }
 onMounted(() => {
-  stock.value.sellingPrices.push({ price: null, name: null, tax_rate: null, currency: 'TL' })
+  stock.value.primary = stock.value.primary ? 1 : 0
+  if (stock.value.sellingPrices.length == 0) {
+    stock.value.sellingPrices.push({ price: null, name: null, tax_rate: null, currency: 'TL' })
+  }
 })
 </script>
