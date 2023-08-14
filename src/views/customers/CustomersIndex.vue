@@ -107,7 +107,7 @@
   </div>
   <div class="grid grid-cols-2 gap-2 p-2">
     <router-link
-      :to="{ name: RouteName.stocks_definitions }"
+      :to="{ name: RouteName.definitions }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       href="#"
     >
