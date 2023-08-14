@@ -61,8 +61,11 @@
 
         <li v-for="definition in definitions" :key="definition._id">
           <router-link
+            :to="{
+              name: RouteName.definitions_update,
+              params: { module: route.params.module, id: definition._id }
+            }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
-            to="/account"
           >
             <div class="flex-shrink-0">
               <div
