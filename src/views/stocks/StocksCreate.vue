@@ -1,20 +1,93 @@
 <template>
-  <form class="p-4">
-    <div class="relative z-0 w-full mb-6 group">
-      <input
-        id="product_name"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        name="product_name"
-        placeholder=" "
-        required
-        type="text"
-      />
-      <label
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        for="product_name"
-        >Ürün Adı</label
+  <breadcrumb-view></breadcrumb-view>
+  <form class="px-4" @submit.prevent="submit">
+    <input-view v-model="stock.name" placeholder="Ürün Adı"></input-view>
+
+    <div class="grid grid-cols-2 gap-1 mt-4">
+      <radio-button v-model="stock.primary" :value="true" placeholder="Ana Ürün"></radio-button>
+      <radio-button v-model="stock.primary" :value="false" placeholder="Yedek Parça"></radio-button>
+    </div>
+
+    <add-period v-model="stock.period"></add-period>
+
+    <definitions-panel
+      :module="ModuleName.stocks"
+      :properties="stock.properties"
+      @update:modelValue="(x) => (stock.properties = x)"
+    ></definitions-panel>
+    <div class="flex items-baseline">
+      <input-view
+        v-model="stock.quantity"
+        :disabled="stock.unlimited"
+        :value="quantity"
+        class="flex-1"
+        placeholder="Miktar"
+        type="number"
+      ></input-view>
+      <underline-select v-model="stock.unit" class="w-1/3" placeholder="Ölçü birimi">
+        <option value="Adet">Adet</option>
+        <option value="Kg">Kg</option>
+        <option value="Lt">Lt</option>
+      </underline-select>
+      <toggle-button
+        v-model="stock.unlimited"
+        class="flex-1"
+        placeholder="Sınırsız"
+      ></toggle-button>
+    </div>
+    <calc-price v-model="stock.purchasePrices" name="Alış"></calc-price>
+    <calc-price v-model="stock.sellingPrices" name="Satış"></calc-price>
+    <div class="flex justify-end items-center">
+      <button
+        class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        type="button"
       >
-      <!-- //TODO özellike ekle gelecek sonra kaydet falan işte -->
+        Vazgeç
+      </button>
+      <button
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        type="submit"
+      >
+        Kaydet
+      </button>
     </div>
   </form>
 </template>
+<script lang="ts" setup>
+import InputView from '@/components/InputView.vue'
+import { createStocks, stockData, type StockInterface } from '@/api/StockApi'
+import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import ToggleButton from '@/components/ToggleButton.vue'
+import UnderlineSelect from '@/components/UnderlineSelect.vue'
+import CalcPrice from '@/components/CalcPrice.vue'
+import { computed, onMounted, ref } from 'vue'
+import { isGranted } from '@/api/UserApi'
+import { PermissionName } from '@/enums/PermissionName'
+import { userStore } from '@/stores/AuthStore'
+import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
+import { ModuleName } from '@/enums/ModuleName'
+import AddPeriod from '@/views/stocks/addPeriod.vue'
+import RadioButton from '@/components/RadioButton.vue'
+
+const stock = ref<StockInterface>({ ...stockData })
+const store = userStore()
+const quantity = computed(() => {
+  if (stock.value.unlimited) {
+    stock.value.quantity = 0
+    return 0
+  }
+  return stock.value.quantity
+})
+const submit = async () => {
+  const data = { ...stock.value }
+  data.status = isGranted(PermissionName.stocks_save)
+  data.company = store.company?._id as string
+  data.primary = !!data.primary
+  await createStocks(data).then((r) => {
+    console.log(r.success, r.message)
+  })
+}
+onMounted(() => {
+  stock.value.sellingPrices.push({ price: null, name: null, tax_rate: null, currency: 'TL' })
+})
+</script>
