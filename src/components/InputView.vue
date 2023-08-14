@@ -40,7 +40,6 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'hello',
   type: 'text',
   required: false
 })
