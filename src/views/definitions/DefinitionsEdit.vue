@@ -53,7 +53,7 @@ import { useRoute } from 'vue-router'
 import { ModuleName } from '@/enums/ModuleName'
 import router from '@/router'
 import InputView from '@/components/InputView.vue'
-import { createDefinition, definition } from '@/api/DefinitionsApi'
+import { definition, getDefinition, updateDefinition } from '@/api/DefinitionsApi'
 import { userStore } from '@/stores/AuthStore'
 import { RouteName } from '@/enums/RouteName'
 
@@ -62,19 +62,18 @@ const { company } = userStore()
 
 async function submit() {
   console.log(definition.value)
-  await createDefinition(definition.value).then((r) => {
+  await updateDefinition(definition.value).then((r) => {
     r.success
       ? router.push({ name: RouteName.definitions, params: { module: route.params.module } })
       : console.log(r.message)
   })
 }
 
-onMounted(() => {
-  if (!Object.keys(ModuleName).includes(route.params.module as string)) {
+onMounted(async () => {
+  if (!Object.keys(ModuleName).includes(route.params.module as string) && !route.params?.id) {
     router.push('/')
   } else {
-    definition.value.company = company?._id as string
-    definition.value.module = route.params.module as string
+    definition.value = await getDefinition(route.params.id as string)
   }
 })
 </script>

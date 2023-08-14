@@ -63,6 +63,10 @@ export default {
         'Segoe UI Symbol',
         'Noto Color Emoji'
       ]
+    },
+    screens: {
+      xs: { min: '0px', max: '320px' },
+      sm: { min: '321px', max: '450px' }
     }
   }
 }

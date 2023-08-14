@@ -55,20 +55,26 @@
 </template>
 <script lang="ts" setup>
 import InputView from '@/components/InputView.vue'
-import { createStocks, stockData, type StockInterface } from '@/api/StockApi'
+import { getStock, stockData, type StockInterface, updateStock } from '@/api/StockApi'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import ToggleButton from '@/components/ToggleButton.vue'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
 import CalcPrice from '@/components/CalcPrice.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { isGranted } from '@/api/UserApi'
 import { PermissionName } from '@/enums/PermissionName'
 import { userStore } from '@/stores/AuthStore'
-import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 import { ModuleName } from '@/enums/ModuleName'
 import AddPeriod from '@/views/stocks/addPeriod.vue'
 import RadioButton from '@/components/RadioButton.vue'
+import { useRoute } from 'vue-router'
+import { RouteName } from '@/enums/RouteName'
+import router from '@/router'
 
+const DefinitionsPanel = defineAsyncComponent({
+  loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
+  delay: 200
+})
 const stock = ref<StockInterface>({ ...stockData })
 const store = userStore()
 const quantity = computed(() => {
@@ -81,17 +87,18 @@ const quantity = computed(() => {
 const submit = async () => {
   const data = { ...stock.value }
   data.status = isGranted(PermissionName.stocks_save)
-  data.company = store.company?._id as string
   data.primary = !!data.primary
-  console.log(data)
-  await createStocks(data).then((r) => {
+  await updateStock(data).then((r) => {
     console.log(r.success, r.message)
   })
 }
-onMounted(() => {
-  stock.value.primary = stock.value.primary ? 1 : 0
-  if (stock.value.sellingPrices.length == 0) {
-    stock.value.sellingPrices.push({ price: null, name: null, tax_rate: null, currency: 'TL' })
+const route = useRoute()
+onMounted(async () => {
+  if (route.params.id) {
+    stock.value = await getStock(route.params.id as string)
+    stock.value.primary = stock.value.primary ? 1 : 0
+  } else {
+    router.push({ name: RouteName.stocks })
   }
 })
 </script>
