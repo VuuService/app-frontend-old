@@ -4,7 +4,7 @@
   <form class="px-2 py-4" @submit.prevent="submit">
     <input-view v-model="user.firstName" placeholder="İsim"></input-view>
     <input-view v-model="user.lastName" placeholder="Soyisim"></input-view>
-    <input-view v-model="user.email" placeholder="E-Posta" type="email"></input-view>
+    <input-view v-model="user.email" placeholder="E-Posta" required type="email"></input-view>
     <input-view v-model="user.phone" placeholder="Telefon" type="tel"></input-view>
     <div v-if="isRole([RoleName.admin])" class="mb-4">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="role"
@@ -19,6 +19,11 @@
         <option v-for="role in Object.keys(RoleName)" :key="role" :value="role">{{ role }}</option>
       </select>
     </div>
+    <definitions-panel
+      :module="ModuleName.users"
+      :properties="user.properties || []"
+      @update:modelValue="(v: any) => (user.properties = v)"
+    ></definitions-panel>
     <Accordion class="mb-8 shadow">
       <accordion-panel>
         <accordion-header>Görev Tanımı</accordion-header>
@@ -73,7 +78,7 @@
 <script lang="ts" setup>
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'flowbite-vue'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { getRoles, type RolesInterface } from '@/api/RolesApi'
 import ToggleButton from '@/components/ToggleButton.vue'
 import { PermissionName } from '@/enums/PermissionName'
@@ -84,6 +89,11 @@ import InputView from '@/components/InputView.vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import { RouteName } from '@/enums/RouteName'
+
+const DefinitionsPanel = defineAsyncComponent({
+  loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
+  delay: 200
+})
 
 const selectedRole = ref<RolesInterface[]>([])
 const selectedPermissions = ref<string[]>([])
@@ -130,7 +140,6 @@ const submit = async () => {
 const route = useRoute()
 onMounted(async () => {
   roles.value = await getRoles()
-  console.log(roles.value)
   if (route.params.id) {
     user.value = await getUser(route.params.id as string)
     role.value = user.value.role?.toString().toLowerCase()

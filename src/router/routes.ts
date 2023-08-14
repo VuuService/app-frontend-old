@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
     name: RouteName.home,
     children: [
       {
+        path: '/dashboard',
+        name: RouteName.home,
+        component: () => import('@/views/AboutView.vue')
+      },
+      {
         path: '/account',
         name: RouteName.account,
         component: () => import('@/views/account/AccountIndex.vue')
@@ -67,25 +72,25 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/stocks/StocksCreate.vue')
       },
       {
-        path: '/stocks_definitions',
-        name: RouteName.stocks_definitions,
-        component: () => import('@/views/stocks/StocksDefinitionsIndex.vue')
+        path: '/stocks/edit/:name/:id',
+        name: RouteName.stocks_update,
+        component: () => import('@/views/stocks/StocksEdit.vue')
       },
       {
-        path: '/stocks_definitions/create',
-        name: RouteName.stocks_definitions_create,
-        component: () => import('@/views/stocks/StocksDefinitionsCreate.vue')
-      },
-      {
-        path: '/definitions',
+        path: '/definitions/:module',
         name: RouteName.definitions,
         props: true,
         component: () => import('@/views/definitions/DefinitionsIndex.vue')
       },
       {
-        path: '/definitions/create',
+        path: '/definitions/:module/create',
         name: RouteName.definitions_create,
         component: () => import('@/views/definitions/DefinitionsCreate.vue')
+      },
+      {
+        path: '/definitions/:module/edit/:id',
+        name: RouteName.definitions_update,
+        component: () => import('@/views/definitions/DefinitionsEdit.vue')
       },
       {
         path: '/company/create',

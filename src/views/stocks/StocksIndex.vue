@@ -79,9 +79,9 @@
           </router-link>
         </li>
 
-        <li v-for="i in 4" :key="i">
+        <li v-for="stock in stocks" :key="stock._id">
           <router-link
-            :to="{ name: RouteName.stocks_create }"
+            :to="{ name: RouteName.stocks_update, params: { name: stock.name, id: stock._id } }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
@@ -93,7 +93,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                Matkap
+                {{ stock.name }}
               </p>
             </div>
             <div
@@ -108,7 +108,7 @@
   </div>
   <div class="grid grid-cols-2 gap-2 p-2">
     <router-link
-      :to="{ name: RouteName.stocks_definitions }"
+      :to="{ name: RouteName.definitions, params: { module: ModuleName.stocks } }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       href="#"
     >
@@ -120,6 +120,15 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import { ModuleName } from '@/enums/ModuleName'
+import { getStocks, type StockInterface } from '@/api/StockApi'
+import { onMounted, ref } from 'vue'
+
+const stocks = ref<StockInterface[]>()
+
+onMounted(async () => {
+  stocks.value = await getStocks()
+})
 </script>
 <style lang="css" scoped>
 .chips-container {
