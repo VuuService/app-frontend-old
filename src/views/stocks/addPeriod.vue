@@ -60,7 +60,7 @@ const model = computed({
       let v = parseFloat(value.toString())
       switch (dateType.value) {
         case 'Saat':
-          v = value / 24
+          v = v / 24
           break
         case 'Hafta':
           v *= 7
