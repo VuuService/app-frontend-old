@@ -33,3 +33,15 @@ export async function createDefinition(
     .then((r) => ({ success: true, message: r.data }))
     .catch((e) => ({ success: false, message: e.response.data.error }))
 }
+
+export async function getDefinition(id: string) {
+  return await AppAxios.get('/definitions/edit/' + id).then(
+    (r: AxiosResponse<DefinitionInterface>) => r.data
+  )
+}
+
+export async function updateDefinition(data: DefinitionInterface) {
+  return await AppAxios.put('/definitions/edit/' + data._id, data)
+    .then((r: AxiosResponse<DefinitionInterface>) => ({ success: true, message: r.data }))
+    .catch((e) => ({ success: false, message: e.response.data.error }))
+}
