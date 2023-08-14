@@ -72,6 +72,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/stocks/StocksCreate.vue')
       },
       {
+        path: '/stocks/edit/:name/:id',
+        name: RouteName.stocks_update,
+        component: () => import('@/views/stocks/StocksEdit.vue')
+      },
+      {
         path: '/definitions/:module',
         name: RouteName.definitions,
         props: true,
