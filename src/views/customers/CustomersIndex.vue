@@ -78,9 +78,12 @@
           </router-link>
         </li>
 
-        <li v-for="i in 4" :key="i">
+        <li v-for="customer in customers" :key="customer._id">
           <router-link
-            :to="{ name: RouteName.customers_create }"
+            :to="{
+              name: RouteName.customers_update,
+              params: { fullname: `${customer.firstName}-${customer.lastName}`, id: customer._id }
+            }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
@@ -92,7 +95,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                Ahmet YILDIZ
+                {{ customer.firstName }} {{ customer.lastName }}
               </p>
             </div>
             <div
@@ -107,7 +110,7 @@
   </div>
   <div class="grid grid-cols-2 gap-2 p-2">
     <router-link
-      :to="{ name: RouteName.definitions }"
+      :to="{ name: RouteName.definitions, params: { module: ModuleName.customers } }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       href="#"
     >
@@ -119,6 +122,16 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import { ModuleName } from '@/enums/ModuleName'
+import { onMounted, ref } from 'vue'
+import type { CustomerInterface } from '@/api/CustomersApi'
+import { getCustomers } from '@/api/CustomersApi'
+
+const customers = ref<CustomerInterface[]>()
+
+onMounted(async () => {
+  customers.value = await getCustomers()
+})
 </script>
 <style lang="css" scoped>
 .chips-container {

@@ -78,7 +78,7 @@
 <script lang="ts" setup>
 import { Accordion, AccordionContent, AccordionHeader, AccordionPanel } from 'flowbite-vue'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getRoles, type RolesInterface } from '@/api/RolesApi'
 import ToggleButton from '@/components/ToggleButton.vue'
 import { PermissionName } from '@/enums/PermissionName'
@@ -89,11 +89,6 @@ import InputView from '@/components/InputView.vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import { RouteName } from '@/enums/RouteName'
-
-const DefinitionsPanel = defineAsyncComponent({
-  loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
-  delay: 200
-})
 
 const selectedRole = ref<RolesInterface[]>([])
 const selectedPermissions = ref<string[]>([])

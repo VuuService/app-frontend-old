@@ -48,18 +48,29 @@
 <script lang="ts" setup>
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import InputView from '@/components/InputView.vue'
-import { ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 import type { CustomerInterface } from '@/api/CustomersApi'
-import { createCustomers, customerData } from '@/api/CustomersApi'
+import { customerData, getCustomer, updateCustomer } from '@/api/CustomersApi'
 import CitiesView from '@/components/CitiesView.vue'
-import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 import { ModuleName } from '@/enums/ModuleName'
 import { userStore } from '@/stores/AuthStore'
+import { useRoute } from 'vue-router'
+
+const DefinitionsPanel = defineAsyncComponent({
+  loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
+  delay: 200
+})
 
 const customer = ref<CustomerInterface>({ ...customerData })
 const user = userStore()
 const submit = async () => {
   customer.value.company = user.company
-  await createCustomers(customer.value).then((r) => console.log(r))
+  await updateCustomer(customer.value).then((r) => console.log(r))
 }
+const route = useRoute()
+onMounted(async () => {
+  if (route.params?.id) {
+    customer.value = await getCustomer(route.params.id)
+  }
+})
 </script>
