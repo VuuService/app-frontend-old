@@ -1,74 +1,21 @@
 <template>
   <breadcrumb-view></breadcrumb-view>
-  <form class="p-4">
-    <div class="relative z-0 w-full mb-6 group">
-      <input
-        id="product_name"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=""
-        required
-        type="text"
-      />
-      <label
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 inline-flex items-center"
-        for="product_name"
-        >Vergi Kimlik Numarası<span class="text-xs pl-1 text-green-600"
-          >(Zorunlu değil)</span
-        ></label
-      >
-    </div>
-
-    <div class="relative z-0 w-full mb-6 group">
-      <input
-        id="product_name"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=""
-        required
-        type="text"
-      />
-      <label
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        for="product_name"
-        >Adı Soyadı</label
-      >
-    </div>
-    <div class="relative z-0 w-full mb-6 group">
-      <input
-        id="product_name"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=""
-        required
-        type="text"
-      />
-      <label
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        for="product_name"
-        >Telefon</label
-      >
-    </div>
-
-    <div class="relative z-0 w-full mb-6 group">
-      <input
-        id="product_name"
-        class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-        placeholder=""
-        required
-        type="text"
-      />
-      <label
-        class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        for="product_name"
-        >Adres</label
-      >
-    </div>
-    <div class="grid grid-cols-1 py-2">
-      <button
-        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-        type="button"
-      >
-        Konum
-      </button>
-    </div>
+  <form class="p-4" @submit.prevent="submit">
+    <input-view v-model="customer.firstName" placeholder="İsim"></input-view>
+    <input-view v-model="customer.lastName" placeholder="Soyisim"></input-view>
+    <input-view
+      v-model="customer.phone"
+      pattern="[0-9]{10}"
+      placeholder="Telefon Numarası"
+      title="Başında sıfır olmadan girin."
+      type="tel"
+    ></input-view>
+    <cities-view v-if="customer.address" v-model="customer.address"></cities-view>
+    <definitions-panel
+      v-model="customer.properties"
+      :module="ModuleName.users"
+      :properties="customer.properties"
+    ></definitions-panel>
     <!-- //TODO  Burada konum butonuna tıklanınca openstreetmap adres bilgisi çekeceğiz. ayrıca geolocalation.coords -->
     <!-- //TODO input masklar yapılacak. quasara benzer bakıcaz buna -->
     <!-- //TODO  Burada sadece müşteri kaydetmek istene bilir. Eğer ki müşteriye cihaz satmak isteniyorsa ya da müşterinin cihazına direk bir bakım yapılacaksa kaydetin dışında butonlar koymalıyız. bu butonlar önce müşteriyi kaydedecek daha sonra ilgili ekrana atacak. Ekranları kaydırmalı düşünmüştüm. Ancak kullanıcının kafası karışa bilir. müşteri kayıt edildikten sonra ilgili ekranı route yaparak yönlendirmek en doğrusu hem müşterinin bilgileri gösterilir.
@@ -92,7 +39,7 @@
     </div>
     <button
       class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-      type="button"
+      type="submit"
     >
       Kaydet
     </button>
@@ -100,4 +47,19 @@
 </template>
 <script lang="ts" setup>
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
+import InputView from '@/components/InputView.vue'
+import { ref } from 'vue'
+import type { CustomerInterface } from '@/api/CustomersApi'
+import { createCustomers, customerData } from '@/api/CustomersApi'
+import CitiesView from '@/components/CitiesView.vue'
+import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
+import { ModuleName } from '@/enums/ModuleName'
+import { userStore } from '@/stores/AuthStore'
+
+const customer = ref<CustomerInterface>({ ...customerData })
+const user = userStore()
+const submit = async () => {
+  customer.value.company = user.company
+  await createCustomers(customer.value).then((r) => console.log(r))
+}
 </script>
