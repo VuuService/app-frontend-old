@@ -18,5 +18,10 @@ export enum PermissionName {
   definitions_read = 'definitions:read',
   definitions_update = 'definitions:update',
   definitions_delete = 'definitions:delete',
-  definitions_save = 'definitions:save'
+  definitions_save = 'definitions:save',
+  customers_create = 'customers:create',
+  customers_read = 'customers:read',
+  customers_update = 'customers:update',
+  customers_delete = 'customers:delete',
+  customers_save = 'customers:save'
 }
