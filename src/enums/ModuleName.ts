@@ -2,5 +2,6 @@ export enum ModuleName {
   users = 'users',
   stocks = 'stocks',
   roles = 'roles',
-  definitions = 'definitions'
+  definitions = 'definitions',
+  customers = 'customers'
 }
