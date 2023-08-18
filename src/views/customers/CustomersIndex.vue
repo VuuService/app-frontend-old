@@ -78,7 +78,7 @@
           </router-link>
         </li>
 
-        <li v-for="customer in customers" :key="customer._id">
+        <li v-for="(customer, i) in customers" :key="i">
           <router-link
             :to="{
               name: RouteName.customers_update,
@@ -110,7 +110,7 @@
   </div>
   <div class="grid grid-cols-2 gap-2 p-2">
     <router-link
-      :to="{ name: RouteName.definitions, params: { module: ModuleName.customers } }"
+      :to="{ name: RouteName.definitions, params: { module: module } }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       href="#"
     >
@@ -122,10 +122,12 @@
 <script lang="ts" setup>
 import { RouteName } from '@/enums/RouteName'
 import BreadcrumbView from '@/components/BreadcrumbView.vue'
-import { ModuleName } from '@/enums/ModuleName'
 import { onMounted, ref } from 'vue'
 import type { CustomerInterface } from '@/api/CustomersApi'
 import { getCustomers } from '@/api/CustomersApi'
+import { ModuleName } from '@/enums/ModuleName'
+
+const module = ref<string>(ModuleName.customers)
 
 const customers = ref<CustomerInterface[]>()
 
