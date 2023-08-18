@@ -41,6 +41,7 @@
       <button
         class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         type="button"
+        @click="router.push({ name: RouteName.stocks })"
       >
         Vazgeç
       </button>
@@ -79,7 +80,6 @@ const stock = ref<StockInterface>({ ...stockData })
 const store = userStore()
 const quantity = computed(() => {
   if (stock.value.unlimited) {
-    stock.value.quantity = 0
     return 0
   }
   return stock.value.quantity
@@ -89,7 +89,10 @@ const submit = async () => {
   data.status = isGranted(PermissionName.stocks_save)
   data.primary = !!data.primary
   await updateStock(data).then((r) => {
-    console.log(r.success, r.message)
+    console.log(r)
+    if (r.success) {
+      router.push({ name: RouteName.stocks })
+    }
   })
 }
 const route = useRoute()
