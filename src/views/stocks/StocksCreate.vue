@@ -41,6 +41,7 @@
       <button
         class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         type="button"
+        @click="router.push({ name: RouteName.stocks })"
       >
         Vazgeç
       </button>
@@ -68,6 +69,8 @@ import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 import { ModuleName } from '@/enums/ModuleName'
 import AddPeriod from '@/views/stocks/addPeriod.vue'
 import RadioButton from '@/components/RadioButton.vue'
+import router from '@/router'
+import { RouteName } from '@/enums/RouteName'
 
 const stock = ref<StockInterface>({ ...stockData })
 const store = userStore()
@@ -86,12 +89,21 @@ const submit = async () => {
   console.log(data)
   await createStocks(data).then((r) => {
     console.log(r.success, r.message)
+    if (r.success) {
+      router.push({ name: RouteName.stocks })
+    }
   })
 }
 onMounted(() => {
   stock.value.primary = stock.value.primary ? 1 : 0
   if (stock.value.sellingPrices.length == 0) {
-    stock.value.sellingPrices.push({ price: null, name: null, tax_rate: null, currency: 'TL' })
+    stock.value.sellingPrices.push({
+      price: null,
+      name: null,
+      tax_rate: null,
+      vat_exempt: true,
+      currency: 'TL'
+    })
   }
 })
 </script>
