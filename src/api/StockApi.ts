@@ -4,6 +4,7 @@ import type { AxiosResponse } from 'axios'
 export interface PriceInterface {
   price: number | null
   name: string | null
+  vat_exempt: boolean
   tax_rate: number | null
   currency: string | null
 }
@@ -59,4 +60,10 @@ export async function updateStock(data: StockInterface) {
   return await AppAxios.put('/stocks/edit/' + data._id, data)
     .then((r: AxiosResponse<StockInterface>) => ({ success: true, message: r.data }))
     .catch((e) => ({ success: false, message: e.response.data.error }))
+}
+
+export async function getParts() {
+  return await AppAxios.post('/stocks/search', { primary: false }).then(
+    (r: AxiosResponse<StockInterface[]>) => r.data
+  )
 }
