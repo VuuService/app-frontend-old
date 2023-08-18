@@ -5,7 +5,7 @@ const store = userStore()
 </script>
 <template>
   <nav
-    class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600"
+    class="max-w-md max-auto bg-white dark:bg-gray-900 fixed w-full z-20 top-0 border-b border-gray-200 dark:border-gray-600"
   >
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <a v-if="store.user.company" class="flex items-center" href="https://flowbite.com/">
