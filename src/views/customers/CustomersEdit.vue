@@ -70,7 +70,7 @@ const submit = async () => {
 const route = useRoute()
 onMounted(async () => {
   if (route.params?.id) {
-    customer.value = await getCustomer(route.params.id)
+    customer.value = await getCustomer(route.params.id as string)
   }
 })
 </script>
