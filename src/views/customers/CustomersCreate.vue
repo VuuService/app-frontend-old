@@ -21,10 +21,11 @@
     <!-- //TODO  Burada sadece müşteri kaydetmek istene bilir. Eğer ki müşteriye cihaz satmak isteniyorsa ya da müşterinin cihazına direk bir bakım yapılacaksa kaydetin dışında butonlar koymalıyız. bu butonlar önce müşteriyi kaydedecek daha sonra ilgili ekrana atacak. Ekranları kaydırmalı düşünmüştüm. Ancak kullanıcının kafası karışa bilir. müşteri kayıt edildikten sonra ilgili ekranı route yaparak yönlendirmek en doğrusu hem müşterinin bilgileri gösterilir.
 
      -->
-    <div class="grid grid-cols-2 gap-2 py-4">
+    <div v-if="customer.firstName && customer.phone" class="grid grid-cols-2 gap-2 py-4">
       <button
         class="inline-flex items-center justify-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         type="button"
+        @click="operation(RouteName.customers_selling_device)"
       >
         <i class="vuu-home"></i>
         <span> Satış İşlemleri </span>
@@ -32,6 +33,7 @@
       <button
         class="inline-flex items-center justify-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         type="button"
+        @click="operation(RouteName.customers_maintenance_device)"
       >
         <i class="vuu-home"></i>
         <span> Bakım İşlemleri </span>
@@ -55,11 +57,19 @@ import CitiesView from '@/components/CitiesView.vue'
 import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 import { ModuleName } from '@/enums/ModuleName'
 import { userStore } from '@/stores/AuthStore'
+import { customerStore } from '@/stores/CustomerStore'
+import router from '@/router'
+import { RouteName } from '@/enums/RouteName'
 
 const customer = ref<CustomerInterface>({ ...customerData })
 const user = userStore()
 const submit = async () => {
   customer.value.company = user.company
   await createCustomers(customer.value).then((r) => console.log(r))
+}
+const operation = (operation: string) => {
+  const CustomerStore = customerStore()
+  CustomerStore.setCustomer(customer.value)
+  router.push({ name: operation })
 }
 </script>
