@@ -6,7 +6,9 @@
       {{ name }} fiyatı
       <span
         class="cursor-pointer text-green-600 flex items-center justify-center ml-2 w-5 h-5 border border-green-600 rounded-full"
-        @click="model.push({ price: null, name: null, tax_rate: null, currency: 'TL' })"
+        @click="
+          model.push({ price: null, name: null, tax_rate: null, vat_exempt: true, currency: 'TL' })
+        "
         ><i class="vuu-plus"></i
       ></span>
     </h5>
@@ -26,7 +28,14 @@
         <div class="relative">
           <input-view
             v-model="price.price"
-            :placeholder="i + 1 + '. ' + name + ' Fiyatı' + ` (${price?.currency})`"
+            :placeholder="
+              i +
+              1 +
+              '. ' +
+              name +
+              ' Fiyatı' +
+              ` (${price?.currency}) (${price.vat_exempt ? 'KDV Dahil' : 'KDV Hariç'})`
+            "
             class="sm:flex-1"
             type="number"
           ></input-view>
@@ -35,7 +44,9 @@
         <div class="relative">
           <input-view
             :placeholder="
-              tax[i] ? 'KDV Hariç' + ` (${price?.currency})` : 'KDV Dahil' + ` (${price?.currency})`
+              price.vat_exempt
+                ? 'KDV Hariç' + ` (${price?.currency})`
+                : 'KDV Dahil' + ` (${price?.currency})`
             "
             :value="getPrice(i)"
             class="sm:flex-1"
@@ -55,8 +66,8 @@
           type="number"
         ></input-view>
         <toggle-button
-          v-model="tax[i]"
-          :placeholder="tax[i] ? 'KDV dahil' : 'KDV hariç'"
+          v-model="price.vat_exempt"
+          :placeholder="price.vat_exempt ? 'KDV dahil' : 'KDV hariç'"
         ></toggle-button>
       </div>
       <i
@@ -70,7 +81,7 @@
 import { type PriceInterface } from '@/api/StockApi'
 import ToggleButton from '@/components/ToggleButton.vue'
 import InputView from '@/components/InputView.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
 
 interface Props {
@@ -79,18 +90,17 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {})
-const tax = ref<boolean[]>([])
 
-const calcPrice = (price: PriceInterface, tax: boolean) => {
+const calcPrice = (price: PriceInterface) => {
   if (price.price && price.tax_rate) {
-    if (tax) {
+    if (price.vat_exempt) {
       return price.price - (price.price * price.tax_rate) / 100 || 0
     }
     return price.price + (price.price * price.tax_rate) / 100 || 0
   }
 }
 const getPrice = computed(() => (i: number) => {
-  const calced = calcPrice(model.value[i], tax.value[i])
+  const calced = calcPrice(model.value[i])
   return calced && calced > 0 ? calced : 0
 })
 const emit = defineEmits(['update:modelValue'])
