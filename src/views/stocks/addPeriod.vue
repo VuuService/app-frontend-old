@@ -72,21 +72,23 @@ function newValueSet(value: number) {
 }
 
 watch(dateType, (value, oldValue) => {
-  let v = parseFloat(model.value)
-  switch (oldValue) {
-    case 'Saat':
-      v = v / 24
-      break
-    case 'Hafta':
-      v *= 7
-      break
-    case 'Ay':
-      v *= 30
-      break
-    case 'Yıl':
-      v *= 365
-      break
+  if (model.value != null) {
+    let v = parseFloat(model.value)
+    switch (oldValue) {
+      case 'Saat':
+        v = v / 24
+        break
+      case 'Hafta':
+        v *= 7
+        break
+      case 'Ay':
+        v *= 30
+        break
+      case 'Yıl':
+        v *= 365
+        break
+    }
+    newValueSet(v)
   }
-  newValueSet(v)
 })
 </script>
