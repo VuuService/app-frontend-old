@@ -9,7 +9,13 @@
     Periyot ekle
   </button>
   <div v-else class="grid grid-cols-2">
-    <input-view v-model="model" placeholder="Periyot süresi" type="number"></input-view>
+    <input-view
+      v-model="model"
+      pattern="[0-9]+([,.][0-9]{1,2})?"
+      placeholder="Periyot süresi"
+      type="text"
+      v-on:focusout="valid()"
+    ></input-view>
     <underline-select v-model="dateType" placeholder="Periyot Aralığı">
       <option v-for="item in ['Saat', 'Gün', 'Hafta', 'Ay', 'Yıl']" :key="item" :value="item">
         {{ item }}
@@ -18,15 +24,19 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import InputView from '@/components/InputView.vue'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
 
 const add = ref<boolean>(true)
 const dateType = ref<string>('Gün')
 
+const valid = () => {
+  model.value = model.value.toString().replace(',', '.')
+}
+
 interface Props {
-  modelValue: number | null
+  modelValue: any
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -34,47 +44,49 @@ const emit = defineEmits(['update:modelValue'])
 
 const model = computed({
   get() {
-    let value = props.modelValue
-    if (value != null) {
-      switch (dateType.value) {
-        case 'Saat':
-          value *= 24
-          break
-        case 'Hafta':
-          value = value / 7
-          break
-        case 'Ay':
-          value = value / 30
-          break
-        case 'Yıl':
-          value = value / 365
-          break
-        default:
-      }
-    }
-
-    return !['Gün', 'Saat'].includes(dateType.value) ? value?.toFixed(1) : value
+    return props.modelValue
   },
   set(value) {
-    if (value != null) {
-      let v = parseFloat(value.toString())
-      switch (dateType.value) {
-        case 'Saat':
-          v = v / 24
-          break
-        case 'Hafta':
-          v *= 7
-          break
-        case 'Ay':
-          v *= 30
-          break
-        case 'Yıl':
-          v *= 365
-          break
-      }
-      return emit('update:modelValue', v)
-    }
-    return
+    return emit('update:modelValue', value)
   }
+})
+
+function newValueSet(value: number) {
+  let v = value
+  switch (dateType.value) {
+    case 'Saat':
+      v = v * 24
+      break
+    case 'Hafta':
+      v /= 7
+      break
+    case 'Ay':
+      v /= 30
+      break
+    case 'Yıl':
+      v /= 365
+      break
+  }
+  console.log(v)
+  model.value = v.toFixed(1).toString()
+}
+
+watch(dateType, (value, oldValue) => {
+  let v = parseFloat(model.value)
+  switch (oldValue) {
+    case 'Saat':
+      v = v / 24
+      break
+    case 'Hafta':
+      v *= 7
+      break
+    case 'Ay':
+      v *= 30
+      break
+    case 'Yıl':
+      v *= 365
+      break
+  }
+  newValueSet(v)
 })
 </script>
