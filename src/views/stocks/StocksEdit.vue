@@ -11,9 +11,9 @@
     <add-period v-model="stock.period"></add-period>
 
     <definitions-panel
+      v-model="stock.properties"
       :module="ModuleName.stocks"
-      :properties="stock.properties"
-      @update:modelValue="(x) => (stock.properties = x)"
+      static
     ></definitions-panel>
     <div class="flex items-baseline">
       <input-view
@@ -61,7 +61,7 @@ import BreadcrumbView from '@/components/BreadcrumbView.vue'
 import ToggleButton from '@/components/ToggleButton.vue'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
 import CalcPrice from '@/components/CalcPrice.vue'
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { isGranted } from '@/api/UserApi'
 import { PermissionName } from '@/enums/PermissionName'
 import { userStore } from '@/stores/AuthStore'
@@ -71,11 +71,8 @@ import RadioButton from '@/components/RadioButton.vue'
 import { useRoute } from 'vue-router'
 import { RouteName } from '@/enums/RouteName'
 import router from '@/router'
+import DefinitionsPanel from '@/views/definitions/DefinitionsPanel.vue'
 
-const DefinitionsPanel = defineAsyncComponent({
-  loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
-  delay: 200
-})
 const stock = ref<StockInterface>({ ...stockData })
 const store = userStore()
 const quantity = computed(() => {

@@ -11,9 +11,9 @@
     <add-period v-model="stock.period"></add-period>
 
     <definitions-panel
+      v-model="stock.properties"
       :module="ModuleName.stocks"
-      :properties="stock.properties"
-      @update:modelValue="(x) => (stock.properties = x)"
+      static
     ></definitions-panel>
     <div class="flex items-baseline">
       <input-view
