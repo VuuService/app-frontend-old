@@ -5,29 +5,23 @@
     class="flex justify-between items-center relative"
   >
     <underline-select
-      v-if="!definition.selectedDefinition?._id"
-      v-model="definition.selectedDefinition"
-      :class="{ 'w-1/3': !definition.selectedDefinition?._id }"
+      v-if="!definition._id"
+      v-model="selectedDefinitions[i]"
+      :class="{ 'w-1/3': !definition._id }"
       :placeholder="i + 1 + '. Özellik'"
-      @change="selectDefinition(i)"
     >
-      <option v-for="definition in definitions" :key="definition._id" :value="definition._id">
+      <option v-for="definition in definitionsClone" :key="definition._id" :value="definition">
         {{ definition.key }}
       </option>
     </underline-select>
     <input-view
-      v-if="definition?.definition"
-      v-model="definition.definition.value"
-      :placeholder="definition.definition.key"
-      :type="
-        Object.values(InputType).find((x) => x === definition?.definition?.type)
-          ? definition.definition.type
-          : 'text'
-      "
+      v-model="definition.value"
+      :placeholder="definition.key"
+      :type="Object.values(InputType).find((x) => x === definition.type) ? definition.type : 'text'"
       class="flex-1"
     ></input-view>
     <div
-      v-if="!definition.selectedDefinition?._id || !static"
+      v-if="!definition._id"
       class="cursor-pointer absolute right-0 bottom-0"
       @click="deleteDefinition(i)"
     >
@@ -35,16 +29,15 @@
     </div>
   </div>
   <button
-    v-if="definitions.length > 0"
     class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 my-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
     type="button"
-    @click="selectedDefinitions.push({ selectedDefinition: null, definition: { ...definition } })"
+    @click="selectedDefinitions.push({ ...definition })"
   >
     <i class="vuu-plus"></i>Yeni özellik ekle
   </button>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { DefinitionInterface } from '@/api/DefinitionsApi'
 import { definition, getDefinitions } from '@/api/DefinitionsApi'
 import InputView from '@/components/InputView.vue'
@@ -52,82 +45,45 @@ import { InputType } from '@/enums/InputType'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
 
 const definitions = ref<DefinitionInterface[]>([])
+const definitionsClone = ref<DefinitionInterface[]>([])
 
 interface Props {
   module: string
-  properties: DefinitionInterface[]
+  modelValue: DefinitionInterface[]
   static?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {})
 const emit = defineEmits(['update:modelValue'])
 
-const selectedDefinitions = ref<
-  { selectedDefinition: DefinitionInterface | null; definition?: DefinitionInterface }[]
->([])
-
-function selectDefinition(i: number) {
-  if (definitions.value.length > 0 && selectedDefinitions.value[i]?.selectedDefinition) {
-    selectedDefinitions.value[i].definition = definitions.value.find(
-      (x) => x._id === selectedDefinitions.value[i]?.selectedDefinition?.toString()
-    )
+function firstDataSet() {
+  if (props.modelValue.length == 0) {
+    selectedDefinitions.value = definitions.value.filter((x) => x.static)
   }
 }
 
-function getEmitData() {
-  return selectedDefinitions.value
-    .filter((x) => x?.definition)
-    .map((x) => ({
-      _id: x.definition?._id,
-      key: x.definition?.key,
-      value: x.definition?.value,
-      type: x.definition?.type
-    }))
-}
+const selectedDefinitions = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    return emit('update:modelValue', value)
+  }
+})
 
 function deleteDefinition(i: number) {
   selectedDefinitions.value = selectedDefinitions.value.filter((x, j) => i != j)
 }
 
-watch(
-  selectedDefinitions,
-  () => {
-    emit('update:modelValue', getEmitData())
-  },
-  { deep: true }
-)
-const first = ref<boolean>(true)
-watch(
-  props,
-  () => {
-    if (first.value) {
-      selectedDefinitions.value = props.properties.map((x) => ({
-        selectedDefinition: x,
-        definition: x
-      }))
-      const propertiesMutation = props.properties.map((x) => x._id)
-      selectedDefinitions.value = selectedDefinitions.value.concat(
-        definitions.value
-          .filter((x) => props.static && x.static && !propertiesMutation.includes(x._id))
-          .map((x) => ({
-            selectedDefinition: x,
-            definition: x
-          }))
-      )
-      first.value = false
-    }
-  },
-  { deep: true }
-)
 onMounted(async () => {
-  definitions.value = await getDefinitions(props.module)
-  if (props.static && first.value && props.properties.length == 0 && definitions.value.length > 0) {
-    selectedDefinitions.value = definitions.value
-      .filter((x) => x.static)
-      .map((x) => ({
-        selectedDefinition: { ...x },
-        definition: { ...x }
-      }))
-  }
+  await getDefinitions(props.module).then((definitionArray) => {
+    definitions.value = definitionArray
+    definitionsClone.value = definitionArray.map((x) => {
+      const l = { ...x }
+      delete l._id
+      return l
+    })
+  })
+  firstDataSet()
 })
 </script>
