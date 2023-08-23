@@ -27,8 +27,8 @@
       class="flex-1"
     ></input-view>
     <div
-      v-if="!definition.selectedDefinition?._id"
-      class="absolute right-0 bottom-0"
+      v-if="!definition.selectedDefinition?._id || !static"
+      class="cursor-pointer absolute right-0 bottom-0"
       @click="deleteDefinition(i)"
     >
       <i class="vuu-delete"></i>
@@ -56,6 +56,7 @@ const definitions = ref<DefinitionInterface[]>([])
 interface Props {
   module: string
   properties: DefinitionInterface[]
+  static?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -107,7 +108,7 @@ watch(
       const propertiesMutation = props.properties.map((x) => x._id)
       selectedDefinitions.value = selectedDefinitions.value.concat(
         definitions.value
-          .filter((x) => x.static && !propertiesMutation.includes(x._id))
+          .filter((x) => props.static && x.static && !propertiesMutation.includes(x._id))
           .map((x) => ({
             selectedDefinition: x,
             definition: x
@@ -120,7 +121,7 @@ watch(
 )
 onMounted(async () => {
   definitions.value = await getDefinitions(props.module)
-  if (first.value && props.properties.length == 0 && definitions.value.length > 0) {
+  if (props.static && first.value && props.properties.length == 0 && definitions.value.length > 0) {
     selectedDefinitions.value = definitions.value
       .filter((x) => x.static)
       .map((x) => ({
