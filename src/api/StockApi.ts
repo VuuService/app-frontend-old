@@ -1,5 +1,6 @@
 import AppAxios from '@/utils/AppAxios'
 import type { AxiosResponse } from 'axios'
+import type { UnitTypeLong } from 'dayjs'
 
 export interface PriceInterface {
   price: number | null
@@ -22,7 +23,7 @@ export interface StockInterface {
   unlimited: boolean
   primary: boolean | number
   child?: string[]
-  period: number | null
+  period: { dateType: UnitTypeLong; period: string } | null
 }
 
 export const stockData: StockInterface = {
