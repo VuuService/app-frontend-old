@@ -52,7 +52,7 @@ export const userStore = defineStore('user', () => {
   async function logout() {
     localStorage.removeItem('user')
     User.value = userData
-    router.push({ name: RouteName.login })
+    await router.go({ name: RouteName.login })
   }
 
   function updateUser(data: UserInterface) {
