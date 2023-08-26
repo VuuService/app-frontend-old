@@ -1,24 +1,29 @@
 <template>
   <button
-    v-if="add && props.modelValue == null"
+    v-if="!props.modelValue"
     class="mt-4 w-full py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
     type="button"
-    @click="add = false"
+    @click="addPeriod"
   >
     <i class="vuu-plus"></i>
     Periyot ekle
   </button>
-  <div v-else class="grid grid-cols-2">
+  <div v-if="model?.dateType" class="grid grid-cols-2">
     <input-view
-      v-model="model"
+      v-model="model.period"
       pattern="[0-9]+([,.][0-9]{1,2})?"
       placeholder="Periyot süresi"
+      selectAll
       type="text"
       v-on:focusout="valid()"
     ></input-view>
-    <underline-select v-model="dateType" placeholder="Periyot Aralığı">
-      <option v-for="item in ['Saat', 'Gün', 'Hafta', 'Ay', 'Yıl']" :key="item" :value="item">
-        {{ item }}
+    <underline-select
+      v-model="model.dateType"
+      placeholder="Periyot Aralığı"
+      @change="dateType = model.dateType as UnitTypeLong"
+    >
+      <option v-for="item in Object.values(timeType) as UnitTypeLong[]" :key="item" :value="item">
+        {{ t(item) }}
       </option>
     </underline-select>
   </div>
@@ -27,21 +32,33 @@
 import { computed, ref, watch } from 'vue'
 import InputView from '@/components/InputView.vue'
 import UnderlineSelect from '@/components/UnderlineSelect.vue'
+import { timeType } from '@/enums/Date'
+import dayjs, { type UnitTypeLong } from 'dayjs'
+import duration, { type DurationUnitType } from 'dayjs/plugin/duration'
+import { useI18n } from 'vue-i18n'
 
-const add = ref<boolean>(true)
-const dateType = ref<string>('Gün')
+dayjs.extend(duration)
 
+const { t } = useI18n()
 const valid = () => {
-  model.value = model.value.toString().replace(',', '.')
+  if (model.value?.period) {
+    model.value.period = model.value.period.toString().replace(',', '.') as string
+  }
 }
 
 interface Props {
-  modelValue: any
+  modelValue: { dateType: UnitTypeLong; period: string } | null
+}
+
+function addPeriod() {
+  model.value = { dateType: timeType.day, period: '' }
+  console.log(model.value)
 }
 
 const props = withDefaults(defineProps<Props>(), {})
 const emit = defineEmits(['update:modelValue'])
 
+const dateType = ref<UnitTypeLong>()
 const model = computed({
   get() {
     return props.modelValue
@@ -51,44 +68,43 @@ const model = computed({
   }
 })
 
-function newValueSet(value: number) {
-  let v = value
-  switch (dateType.value) {
-    case 'Saat':
-      v = v * 24
-      break
-    case 'Hafta':
-      v /= 7
-      break
-    case 'Ay':
-      v /= 30
-      break
-    case 'Yıl':
-      v /= 365
-      break
+function calcPeriodValue(newValue: DurationUnitType, oldValue: DurationUnitType) {
+  if (model.value?.period) {
+    const period = parseFloat(model.value.period)
+    const millisecond = dayjs.duration(period, oldValue).asMilliseconds()
+    const durationObject = dayjs.duration(millisecond, 'millisecond')
+    switch (newValue) {
+      case timeType.second:
+        model.value.period = durationObject.asSeconds().toFixed(2).toString()
+        break
+      case timeType.minute:
+        model.value.period = durationObject.asMinutes().toFixed(2).toString()
+        break
+      case timeType.hour:
+        model.value.period = durationObject.asHours().toFixed(2).toString()
+        break
+      case timeType.day:
+        model.value.period = durationObject.asDays().toFixed(2).toString()
+        break
+      case timeType.week:
+        model.value.period = durationObject.asWeeks().toFixed(2).toString()
+        break
+      case timeType.month:
+        model.value.period = durationObject.asMonths().toFixed(2).toString()
+        break
+      case timeType.year:
+        model.value.period = durationObject.asYears().toFixed(2).toString()
+        break
+      default:
+        model.value.period = millisecond.toString()
+    }
   }
-  console.log(v)
-  model.value = v.toFixed(1).toString()
 }
 
-watch(dateType, (value, oldValue) => {
-  if (model.value != null) {
-    let v = parseFloat(model.value)
-    switch (oldValue) {
-      case 'Saat':
-        v = v / 24
-        break
-      case 'Hafta':
-        v *= 7
-        break
-      case 'Ay':
-        v *= 30
-        break
-      case 'Yıl':
-        v *= 365
-        break
-    }
-    newValueSet(v)
-  }
+watch(dateType, (newValue, oldValue) => {
+  newValue = newValue ? newValue : (timeType.day as UnitTypeLong)
+  oldValue = oldValue ? oldValue : (timeType.day as UnitTypeLong)
+  calcPeriodValue(newValue as DurationUnitType, oldValue as DurationUnitType)
+  console.log(model.value)
 })
 </script>
