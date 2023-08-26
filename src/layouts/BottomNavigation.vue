@@ -16,7 +16,7 @@ const menuItems = ref<menuItemInterface[]>([
 </script>
 <template>
   <div
-    class="max-w-md mx-auto fixed bottom-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 md:hidden"
+    class="max-w-md mx-auto fixed bottom-0 z-40 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 md:hidden"
   >
     <div class="flex justify-evenly font-medium">
       <div v-for="menuItem in menuItems" :key="menuItem.icon">
