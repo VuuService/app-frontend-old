@@ -37,7 +37,12 @@
             <button
               class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600"
               type="button"
-              @click="user.logout"
+              @click="
+                () => {
+                  modal?.hide()
+                  user.logout()
+                }
+              "
             >
               Çıkış Yap
             </button>
@@ -53,6 +58,7 @@ import { Modal } from 'flowbite'
 import { onMounted, ref } from 'vue'
 import InputView from '@/components/InputView.vue'
 import { userStore } from '@/stores/AuthStore'
+import { useRoute } from 'vue-router'
 
 const user = userStore()
 const userData = ref({
@@ -64,6 +70,7 @@ const submit = () => {
 }
 const sessionModalement = ref<HTMLElement>()
 const modal = ref<ModalInterface>()
+const route = useRoute()
 onMounted(() => {
   const modalOptions: ModalOptions = {
     placement: 'center',
@@ -75,7 +82,7 @@ onMounted(() => {
   modal.value = new Modal(sessionModalement.value, modalOptions)
   document.getElementById('app')?.addEventListener('click', function (event) {
     if (modal.value) {
-      const exp = user.exp + 1000 * 60 * 60 * 12
+      const exp = user.exp + 1000 * 10 * 60 * 60 * 12
       if (Date.now() > exp) {
         event.preventDefault()
         modal.value.show()
