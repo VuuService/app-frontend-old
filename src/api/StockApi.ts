@@ -10,6 +10,11 @@ export interface PriceInterface {
   currency: string | null
 }
 
+export interface PeriodInterface {
+  dateType: UnitTypeLong
+  period: string | null
+}
+
 export interface StockInterface {
   _id?: string
   name: string
@@ -23,7 +28,7 @@ export interface StockInterface {
   unlimited: boolean
   primary: boolean | number
   child?: string[]
-  period: { dateType: UnitTypeLong; period: string } | null
+  period: PeriodInterface | null
 }
 
 export const stockData: StockInterface = {
