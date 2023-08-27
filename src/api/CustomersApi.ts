@@ -1,7 +1,6 @@
 import AppAxios from '@/utils/AppAxios'
 import type { AxiosResponse } from 'axios'
 import type { CompanyInterface } from '@/api/CompanyApi'
-import type { DefinitionInterface } from '@/api/DefinitionsApi'
 
 export interface AddressInterface {
   province: number | string
@@ -9,20 +8,10 @@ export interface AddressInterface {
   town: string | null
   village: string | null
   neighborhood: string | null
-  coordinate?: { latitude: number; longitude: number }
-}
-
-export interface DeviceInterface {
-  name: string | null
-  maintenanceDate: string | null
-  period: { dateType: string; period: string } | null
-  properties: DefinitionInterface[]
-  parts: {
-    period: { dateType: string; period: string }
-    name: string | null
-    maintenanceDate: string | null
-    properties: DefinitionInterface[]
-  }[]
+  coordinate?: {
+    latitude: number
+    longitude: number
+  }
 }
 
 export interface CustomerInterface {
@@ -33,7 +22,6 @@ export interface CustomerInterface {
   company: CompanyInterface | null
   properties: []
   address?: AddressInterface
-  devices: DeviceInterface[]
 }
 
 export const customerData: CustomerInterface = {
