@@ -29,13 +29,17 @@
         <i class="vuu-home"></i>
         <span> Satış İşlemleri </span>
       </button>
-      <button
+      <router-link
+        :to="{
+          name: RouteName.customers_maintenance_device,
+          params: { id: customer._id, fullName: customer.firstName + '-' + customer.lastName }
+        }"
         class="inline-flex items-center justify-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         type="button"
       >
         <i class="vuu-home"></i>
         <span> Bakım İşlemleri </span>
-      </button>
+      </router-link>
     </div>
     <button
       class="w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -55,6 +59,7 @@ import CitiesView from '@/components/CitiesView.vue'
 import { ModuleName } from '@/enums/ModuleName'
 import { userStore } from '@/stores/AuthStore'
 import { useRoute } from 'vue-router'
+import { RouteName } from '@/enums/RouteName'
 
 const DefinitionsPanel = defineAsyncComponent({
   loader: () => import('@/views/definitions/DefinitionsPanel.vue'),
