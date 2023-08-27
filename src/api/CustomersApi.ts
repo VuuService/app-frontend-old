@@ -31,7 +31,6 @@ export const customerData: CustomerInterface = {
   phone: null,
   company: null,
   properties: [],
-  devices: [],
   address: {
     province: 0,
     district: null,
