@@ -36,6 +36,7 @@ import { timeType } from '@/enums/Date'
 import dayjs, { type UnitTypeLong } from 'dayjs'
 import duration, { type DurationUnitType } from 'dayjs/plugin/duration'
 import { useI18n } from 'vue-i18n'
+import type { PeriodInterface } from '@/api/StockApi'
 
 dayjs.extend(duration)
 
@@ -47,11 +48,11 @@ const valid = () => {
 }
 
 interface Props {
-  modelValue: { dateType: UnitTypeLong; period: string } | null
+  modelValue: PeriodInterface | null
 }
 
 function addPeriod() {
-  model.value = { dateType: timeType.day, period: '' }
+  model.value = { dateType: timeType.day, period: null }
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -104,6 +105,5 @@ watch(dateType, (newValue, oldValue) => {
   newValue = newValue ? newValue : (timeType.day as UnitTypeLong)
   oldValue = oldValue ? oldValue : (timeType.day as UnitTypeLong)
   calcPeriodValue(newValue as DurationUnitType, oldValue as DurationUnitType)
-  console.log(model.value)
 })
 </script>
