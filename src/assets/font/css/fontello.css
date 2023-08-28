@@ -1,12 +1,12 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?96476567');
+  src: url('../font/fontello.eot?61996702');
   src:
-    url('../font/fontello.eot?96476567#iefix') format('embedded-opentype'),
-    url('../font/fontello.woff2?96476567') format('woff2'),
-    url('../font/fontello.woff?96476567') format('woff'),
-    url('../font/fontello.ttf?96476567') format('truetype'),
-    url('../font/fontello.svg?96476567#fontello') format('svg');
+    url('../font/fontello.eot?61996702#iefix') format('embedded-opentype'),
+    url('../font/fontello.woff2?61996702') format('woff2'),
+    url('../font/fontello.woff?61996702') format('woff'),
+    url('../font/fontello.ttf?61996702') format('truetype'),
+    url('../font/fontello.svg?61996702#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?96476567#fontello') format('svg');
+    src: url('../font/fontello.svg?61996702#fontello') format('svg');
   }
 }
 */
@@ -182,6 +182,9 @@
 .vuu-copy:before {
   content: '\e829';
 } /* '' */
+.vuu-routes:before {
+  content: '\e82a';
+} /* '' */
 .vuu-whatsapp:before {
   content: '\f232';
 } /* '' */

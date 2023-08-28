@@ -137,6 +137,9 @@
 .vuu-copy {
   *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe829;&nbsp;');
 }
+.vuu-routes {
+  *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xe82a;&nbsp;');
+}
 .vuu-whatsapp {
   *zoom: expression(this.runtimeStyle[ 'zoom'] = '1', this.innerHTML = '&#xf232;&nbsp;');
 }

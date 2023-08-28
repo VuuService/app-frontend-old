@@ -124,6 +124,9 @@
 .vuu-copy:before {
   content: '\e829';
 } /* '' */
+.vuu-routes:before {
+  content: '\e82a';
+} /* '' */
 .vuu-whatsapp:before {
   content: '\f232';
 } /* '' */
