@@ -72,34 +72,57 @@
             </div>
           </router-link>
         </li>
-
-        <li v-for="(customer, i) in customers" :key="i">
-          <router-link
-            :to="{
-              name: RouteName.customers_update,
-              params: { fullname: `${customer.firstName}-${customer.lastName}`, id: customer._id }
-            }"
-            class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
-          >
-            <div class="flex-shrink-0">
-              <img
-                alt="Neil image"
-                class="w-12 h-12 rounded-full"
-                src="https://picsum.photos/seed/picsum/200/300"
-              />
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium break-words text-gray-900 truncate dark:text-white">
-                {{ customer.firstName }} {{ customer.lastName }}
-              </p>
-            </div>
-            <div
-              class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+        <ListAccordionItem v-for="(customer, i) in customers" :key="i">
+          <template #left>
+            <router-link
+              v-if="customer.firstName"
+              :style="colors[i]"
+              :to="{
+                name: RouteName.customers_maintenance_device,
+                params: { fullName: customer.firstName + '-' + customer.lastName, id: customer._id }
+              }"
+              class="flex justify-center items-center w-12 h-12 border border-gray-100 rounded-full text-white font-bold text-xl"
             >
-              <i class="vuu-right-arrow text-xl"></i>
+              {{ customer.firstName.slice(0, 1).toUpperCase() }}
+            </router-link>
+          </template>
+          <template #middle>
+            <span> {{ customer.firstName }} {{ customer.lastName }} </span>
+          </template>
+          <template #end
+            ><a :href="'tel:+90' + customer.phone"> <i class="vuu-phone-outline text-2xl"></i> </a
+          ></template>
+          <template #content>
+            <div class="flex items-center justify-evenly -mx-2">
+              <a
+                :href="
+                  (isMobile() ? 'whatsapp://' : 'https://web.whatsapp.com/') +
+                  '+90' +
+                  customer.phone
+                "
+                class="flex flex-col items-center"
+                target="_blank"
+              >
+                <i class="vuu-whatsapp text-2xl"></i>
+                <h5>Whatsapp</h5>
+              </a>
+              <a
+                v-if="customer?.address?.coordinate"
+                :href="
+                  'https://www.google.com.tr/maps/place/' +
+                  customer.address.coordinate.latitude +
+                  ',' +
+                  customer.address.coordinate.longitude
+                "
+                class="flex flex-col items-center"
+                target="_blank"
+              >
+                <i class="vuu-routes text-2xl"></i>
+                <h5>Yol tarifi al</h5>
+              </a>
             </div>
-          </router-link>
-        </li>
+          </template>
+        </ListAccordionItem>
       </ul>
     </div>
   </div>
@@ -121,13 +144,25 @@ import { onMounted, ref } from 'vue'
 import type { CustomerInterface } from '@/api/CustomersApi'
 import { getCustomers } from '@/api/CustomersApi'
 import { ModuleName } from '@/enums/ModuleName'
+import ListAccordionItem from '@/components/ListAccordionItem.vue'
+import { randomInt } from '@/utils/math'
+import { isMobile } from '@/api/BrowserApi'
 
 const module = ref<string>(ModuleName.customers)
 
 const customers = ref<CustomerInterface[]>()
+const colors = ref<string[]>([])
+
+function customerNameBackColor() {
+  const colorArray = ['#6002ee', '#90ee02', '#021aee', '#d602ee', '#ee0290', '#ee6002']
+  return `background-color:${colorArray[randomInt(0, colorArray.length)]};`
+}
 
 onMounted(async () => {
   customers.value = await getCustomers()
+  customers.value.map((x, i) => {
+    colors.value[i] = customerNameBackColor()
+  })
 })
 </script>
 <style lang="css" scoped>
