@@ -1,5 +1,18 @@
 import axios from 'axios'
+import { userStore } from '@/stores/AuthStore'
 
-export default axios.create({
+const appAxios = axios.create({
   baseURL: 'https://localhost:3000'
 })
+appAxios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 403) {
+      const user = userStore()
+      user.logout()
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default appAxios
