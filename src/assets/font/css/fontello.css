@@ -1,11 +1,12 @@
 @font-face {
   font-family: 'fontello';
   src: url('../font/fontello.eot?16449169');
-  src: url('../font/fontello.eot?16449169#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff2?16449169') format('woff2'),
-       url('../font/fontello.woff?16449169') format('woff'),
-       url('../font/fontello.ttf?16449169') format('truetype'),
-       url('../font/fontello.svg?16449169#fontello') format('svg');
+  src:
+    url('../font/fontello.eot?16449169#iefix') format('embedded-opentype'),
+    url('../font/fontello.woff2?16449169') format('woff2'),
+    url('../font/fontello.woff?16449169') format('woff'),
+    url('../font/fontello.ttf?16449169') format('truetype'),
+    url('../font/fontello.svg?16449169#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -19,8 +20,9 @@
   }
 }
 */
-[class^="vuu-"]:before, [class*=" vuu-"]:before {
-  font-family: "fontello";
+[class^='vuu-']:before,
+[class*=' vuu-']:before {
+  font-family: 'fontello';
   font-style: normal;
   font-weight: normal;
   speak: never;
@@ -28,7 +30,7 @@
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
-  margin-right: .2em;
+  margin-right: 0.2em;
   text-align: center;
   /* opacity: .8; */
 
@@ -41,7 +43,7 @@
 
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
-  margin-left: .2em;
+  margin-left: 0.2em;
 
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */
@@ -54,51 +56,147 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.vuu-account:before { content: '\e800'; } /* '' */
-.vuu-account-group:before { content: '\e801'; } /* '' */
-.vuu-account-group-outline:before { content: '\e802'; } /* '' */
-.vuu-account-outline:before { content: '\e803'; } /* '' */
-.vuu-home:before { content: '\e804'; } /* '' */
-.vuu-home-outline:before { content: '\e805'; } /* '' */
-.vuu-plus:before { content: '\e806'; } /* '' */
-.vuu-map-marker:before { content: '\e807'; } /* '' */
-.vuu-map-marker-outline:before { content: '\e808'; } /* '' */
-.vuu-phone-outline:before { content: '\e809'; } /* '' */
-.vuu-phone:before { content: '\e80a'; } /* '' */
-.vuu-at:before { content: '\e80b'; } /* '' */
-.vuu-cart-plus:before { content: '\e80c'; } /* '' */
-.vuu-tools:before { content: '\e80d'; } /* '' */
-.vuu-warehouse:before { content: '\e80e'; } /* '' */
-.vuu-bank-outline:before { content: '\e80f'; } /* '' */
-.vuu-bank:before { content: '\e810'; } /* '' */
-.vuu-search:before { content: '\e811'; } /* '' */
-.vuu-delete:before { content: '\e812'; } /* '' */
-.vuu-delete-outline:before { content: '\e813'; } /* '' */
-.vuu-pencil-outline:before { content: '\e814'; } /* '' */
-.vuu-pencil:before { content: '\e815'; } /* '' */
-.vuu-settings-helper:before { content: '\e816'; } /* '' */
-.vuu-cog:before { content: '\e817'; } /* '' */
-.vuu-cog-alt:before { content: '\e818'; } /* '' */
-.vuu-right-arrow:before { content: '\e819'; } /* '' */
-.vuu-left-arrow:before { content: '\e81a'; } /* '' */
-.vuu-account-multiple-plus:before { content: '\e81b'; } /* '' */
-.vuu-account-multiple-plus-outline:before { content: '\e81c'; } /* '' */
-.vuu-account-plus:before { content: '\e81d'; } /* '' */
-.vuu-account-plus-outline:before { content: '\e81e'; } /* '' */
-.vuu-account-tie:before { content: '\e81f'; } /* '' */
-.vuu-account-tie-outline:before { content: '\e820'; } /* '' */
-.vuu-box:before { content: '\e821'; } /* '' */
-.vuu-filter:before { content: '\e822'; } /* '' */
-.vuu-filter-outline:before { content: '\e823'; } /* '' */
-.vuu-sort:before { content: '\e824'; } /* '' */
-.vuu-tag-plus:before { content: '\e825'; } /* '' */
-.vuu-tag-plus-outline:before { content: '\e826'; } /* '' */
-.vuu-tag:before { content: '\e827'; } /* '' */
-.vuu-tag-outline:before { content: '\e828'; } /* '' */
-.vuu-copy:before { content: '\e829'; } /* '' */
-.vuu-routes:before { content: '\e82a'; } /* '' */
-.vuu-back-arrow:before { content: '\e82b'; } /* '' */
-.vuu-box-add:before { content: '\e82c'; } /* '' */
-.vuu-ellipsis:before { content: '\f141'; } /* '' */
-.vuu-ellipsis-vert:before { content: '\f142'; } /* '' */
-.vuu-whatsapp:before { content: '\f232'; } /* '' */
+.vuu-account:before {
+  content: '\e800';
+} /* '' */
+.vuu-account-group:before {
+  content: '\e801';
+} /* '' */
+.vuu-account-group-outline:before {
+  content: '\e802';
+} /* '' */
+.vuu-account-outline:before {
+  content: '\e803';
+} /* '' */
+.vuu-home:before {
+  content: '\e804';
+} /* '' */
+.vuu-home-outline:before {
+  content: '\e805';
+} /* '' */
+.vuu-plus:before {
+  content: '\e806';
+} /* '' */
+.vuu-map-marker:before {
+  content: '\e807';
+} /* '' */
+.vuu-map-marker-outline:before {
+  content: '\e808';
+} /* '' */
+.vuu-phone-outline:before {
+  content: '\e809';
+} /* '' */
+.vuu-phone:before {
+  content: '\e80a';
+} /* '' */
+.vuu-at:before {
+  content: '\e80b';
+} /* '' */
+.vuu-cart-plus:before {
+  content: '\e80c';
+} /* '' */
+.vuu-tools:before {
+  content: '\e80d';
+} /* '' */
+.vuu-warehouse:before {
+  content: '\e80e';
+} /* '' */
+.vuu-bank-outline:before {
+  content: '\e80f';
+} /* '' */
+.vuu-bank:before {
+  content: '\e810';
+} /* '' */
+.vuu-search:before {
+  content: '\e811';
+} /* '' */
+.vuu-delete:before {
+  content: '\e812';
+} /* '' */
+.vuu-delete-outline:before {
+  content: '\e813';
+} /* '' */
+.vuu-pencil-outline:before {
+  content: '\e814';
+} /* '' */
+.vuu-pencil:before {
+  content: '\e815';
+} /* '' */
+.vuu-settings-helper:before {
+  content: '\e816';
+} /* '' */
+.vuu-cog:before {
+  content: '\e817';
+} /* '' */
+.vuu-cog-alt:before {
+  content: '\e818';
+} /* '' */
+.vuu-right-arrow:before {
+  content: '\e819';
+} /* '' */
+.vuu-left-arrow:before {
+  content: '\e81a';
+} /* '' */
+.vuu-account-multiple-plus:before {
+  content: '\e81b';
+} /* '' */
+.vuu-account-multiple-plus-outline:before {
+  content: '\e81c';
+} /* '' */
+.vuu-account-plus:before {
+  content: '\e81d';
+} /* '' */
+.vuu-account-plus-outline:before {
+  content: '\e81e';
+} /* '' */
+.vuu-account-tie:before {
+  content: '\e81f';
+} /* '' */
+.vuu-account-tie-outline:before {
+  content: '\e820';
+} /* '' */
+.vuu-box:before {
+  content: '\e821';
+} /* '' */
+.vuu-filter:before {
+  content: '\e822';
+} /* '' */
+.vuu-filter-outline:before {
+  content: '\e823';
+} /* '' */
+.vuu-sort:before {
+  content: '\e824';
+} /* '' */
+.vuu-tag-plus:before {
+  content: '\e825';
+} /* '' */
+.vuu-tag-plus-outline:before {
+  content: '\e826';
+} /* '' */
+.vuu-tag:before {
+  content: '\e827';
+} /* '' */
+.vuu-tag-outline:before {
+  content: '\e828';
+} /* '' */
+.vuu-copy:before {
+  content: '\e829';
+} /* '' */
+.vuu-routes:before {
+  content: '\e82a';
+} /* '' */
+.vuu-back-arrow:before {
+  content: '\e82b';
+} /* '' */
+.vuu-box-add:before {
+  content: '\e82c';
+} /* '' */
+.vuu-ellipsis:before {
+  content: '\f141';
+} /* '' */
+.vuu-ellipsis-vert:before {
+  content: '\f142';
+} /* '' */
+.vuu-whatsapp:before {
+  content: '\f232';
+} /* '' */
