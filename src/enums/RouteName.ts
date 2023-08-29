@@ -2,6 +2,7 @@ export enum RouteName {
   home = 'home',
   account = 'account',
   customers = 'customers',
+  customers_details = 'customers_details',
   customers_create = 'customers_create',
   customers_update = 'customers_update',
 
