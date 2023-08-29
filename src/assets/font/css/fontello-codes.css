@@ -43,6 +43,7 @@
 .vuu-copy:before { content: '\e829'; } /* '' */
 .vuu-routes:before { content: '\e82a'; } /* '' */
 .vuu-back-arrow:before { content: '\e82b'; } /* '' */
+.vuu-box-add:before { content: '\e82c'; } /* '' */
 .vuu-ellipsis:before { content: '\f141'; } /* '' */
 .vuu-ellipsis-vert:before { content: '\f142'; } /* '' */
 .vuu-whatsapp:before { content: '\f232'; } /* '' */
