@@ -6,7 +6,7 @@
       'border-gray-100': checked,
       'bg-zinc-50': checked
     }"
-    class="mx-2 -px-2 rounded-2xl py-4"
+    class="mx-2 -px-2 rounded-2xl py-2"
   >
     <input v-model="checked" class="hidden" name="status" type="checkbox" />
     <div
@@ -16,7 +16,7 @@
       <div class="flex-shrink-0">
         <slot name="left"></slot>
       </div>
-      <div class="flex-1 min-w-0" @click="checked = !checked">
+      <div class="flex-1 min-w-0" @click="checked = accordion && !checked">
         <slot name="middle"></slot>
       </div>
       <div
@@ -39,9 +39,10 @@ import { ref } from 'vue'
 
 interface Props {
   arrow?: boolean
+  accordion?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), { arrow: false })
+const props = withDefaults(defineProps<Props>(), { arrow: false, accordion: false })
 
 //TODO Yukarıdaki propsun şu anda bir işlevi yok. tailwindde kullanılmayan cssler import edilmediği için yapılmak istenilen başarılı olamayacak gibi. İleriki süreçte tekrardan bakacağız.
 //TODO transition ve delay çalışmıyor onlara da bakılacak.
