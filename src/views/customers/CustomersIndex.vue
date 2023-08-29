@@ -72,13 +72,13 @@
             </div>
           </router-link>
         </li>
-        <ListAccordionItem v-for="(customer, i) in customers" :key="i">
+        <ListAccordionItem v-for="(customer, i) in customers" :key="i" accordion>
           <template #left>
             <router-link
               v-if="customer.firstName"
               :style="colors[i]"
               :to="{
-                name: RouteName.customers_maintenance_device,
+                name: RouteName.customers_details,
                 params: { fullName: customer.firstName + '-' + customer.lastName, id: customer._id }
               }"
               class="flex justify-center items-center w-12 h-12 border border-gray-100 rounded-full text-white font-bold text-xl"
@@ -130,7 +130,6 @@
     <router-link
       :to="{ name: RouteName.definitions, params: { module: module } }"
       class="inline-flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      href="#"
     >
       <i class="vuu-tag-outline text-2xl"></i>
       <h5 class="font-bold tracking-tight text-gray-900 dark:text-white">Müşteri Tanımları</h5>
@@ -153,15 +152,20 @@ const module = ref<string>(ModuleName.customers)
 const customers = ref<CustomerInterface[]>()
 const colors = ref<string[]>([])
 
-function customerNameBackColor() {
+function customerNameBackColor(i: number) {
   const colorArray = ['#6002ee', '#90ee02', '#021aee', '#d602ee', '#ee0290', '#ee6002']
-  return `background-color:${colorArray[randomInt(0, colorArray.length)]};`
+  const color = `background-color:${colorArray[randomInt(0, colorArray.length)]};`
+  if (colors.value[i - 1] != color) {
+    return color
+  } else {
+    return customerNameBackColor(i)
+  }
 }
 
 onMounted(async () => {
   customers.value = await getCustomers()
   customers.value.map((x, i) => {
-    colors.value[i] = customerNameBackColor()
+    colors.value[i] = customerNameBackColor(i)
   })
 })
 </script>
