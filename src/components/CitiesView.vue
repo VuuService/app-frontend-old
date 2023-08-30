@@ -20,21 +20,21 @@
     v-if="town.length > 0"
     v-model="address.town"
     placeholder="Belde"
-    @change="getNeighborhoods"
+    @change="getNeighbourhoods"
   >
     <option :value="null" selected>Belde Seçin</option>
     <option v-for="t in town" :key="t" :value="t.name">{{ t.name }}</option>
   </underline-select>
   <underline-select
-    v-if="neighborhood.length > 0 && address.village == null"
-    v-model="address.neighborhood"
+    v-if="neighbourhood.length > 0 && address.village == null"
+    v-model="address.neighbourhood"
     placeholder="Mahalle"
   >
     <option :value="null" selected>Mahalle Seçin</option>
-    <option v-for="n in neighborhood" :key="n.name" :value="n.name">{{ n.name }}</option>
+    <option v-for="n in neighbourhood" :key="n.name" :value="n.name">{{ n.name }}</option>
   </underline-select>
   <underline-select
-    v-if="village.length > 0 && address.neighborhood == null"
+    v-if="village.length > 0 && address.neighbourhood == null"
     v-model="address.village"
     placeholder="Köy"
   >
@@ -73,27 +73,28 @@ const getCity = async () => {
     district.value = await getCities(cities.value[city].id).then((r) => r.district)
     town.value = []
     address.value.town = null
-    neighborhood.value = []
-    address.value.neighborhood = null
+    neighbourhood.value = []
+    address.value.neighbourhood = null
     village.value = []
     address.value.village = null
   }
 }
 const district = ref<any[]>([])
-const neighborhood = ref<any[]>([])
+const neighbourhood = ref<any[]>([])
 const town = ref<any[]>([])
 const village = ref<any[]>([])
 const getDistrict = () => {
   const temp = district.value.find((x) => x.name === address.value.district)
   town.value = []
   address.value.town = null
-  neighborhood.value = []
-  address.value.neighborhood = null
+  neighbourhood.value = []
+  address.value.neighbourhood = null
   village.value = []
   address.value.village = null
 
   if (temp?.neighborhood) {
-    temp.neighborhood.map((x: any) => neighborhood.value.push(x))
+    console.log('neighborhood a girdi')
+    temp.neighborhood.map((x: any) => neighbourhood.value.push(x))
   }
   if (temp?.town) {
     temp.town.map((x: any) => town.value.push(x))
@@ -102,11 +103,11 @@ const getDistrict = () => {
     temp.village.map((x: any) => village.value.push(x))
   }
 }
-const getNeighborhoods = () => {
+const getNeighbourhoods = () => {
   const temp = town.value.find((x) => x.name === address.value.town)
-  if (temp?.neighborhood) {
-    neighborhood.value = []
-    temp.neighborhood.map((x: any) => neighborhood.value.push(x))
+  if (temp?.neighbourhood) {
+    neighbourhood.value = []
+    temp.neighbourhood.map((x: any) => neighbourhood.value.push(x))
   }
 }
 
@@ -140,5 +141,6 @@ const address = computed({
 })
 onMounted(async () => {
   cities.value = await getCities(0)
+  address.value.province = 0
 })
 </script>
