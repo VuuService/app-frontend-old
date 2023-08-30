@@ -130,7 +130,10 @@
       <ul>
         <li>
           <router-link
-            :to="{ name: RouteName.customers_create }"
+            :to="{
+              name: RouteName.devices_create,
+              params: { fullName: $route.params.fullName, id: customer._id }
+            }"
             class="flex items-center space-x-4 cursor-pointer py-3 sm:py-4 px-4"
           >
             <div class="flex-shrink-0">
