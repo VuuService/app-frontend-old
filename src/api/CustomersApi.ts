@@ -7,7 +7,7 @@ export interface AddressInterface {
   district: string | null
   town: string | null
   village: string | null
-  neighborhood: string | null
+  neighbourhood: string | null
   coordinate?: {
     latitude: number
     longitude: number
@@ -22,6 +22,7 @@ export interface CustomerInterface {
   company: CompanyInterface | null
   properties: []
   address?: AddressInterface
+  expireAt?: string | null
 }
 
 export const customerData: CustomerInterface = {
@@ -36,7 +37,7 @@ export const customerData: CustomerInterface = {
     district: null,
     town: null,
     village: null,
-    neighborhood: null
+    neighbourhood: null
   }
 }
 
@@ -61,4 +62,8 @@ export async function updateCustomer(data: CustomerInterface) {
   return await AppAxios.put('/customers/edit/' + data._id, data)
     .then((r: AxiosResponse<CustomerInterface>) => ({ success: true, message: r.data }))
     .catch((e) => ({ success: false, message: e.response.data.error }))
+}
+
+export async function destroyCustomer(id: string): Promise<any> {
+  AppAxios.delete('/customers/destroy/' + id).then((r: AxiosResponse<any>) => r.data)
 }
