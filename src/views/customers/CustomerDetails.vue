@@ -1,10 +1,40 @@
 <template>
-  <div class="px-4 mb-4">
+  <div v-if="customer" class="px-4 mb-4">
     <div class="flex justify-between items-center text-2xl mb-4">
       <router-link :to="{ name: RouteName.customers }"><i class="vuu-back-arrow"></i></router-link>
       <div>
         <i class="vuu-pencil-outline px-2"></i>
-        <i class="vuu-ellipsis-vert pl-2"></i>
+        <button id="dropdownButton" data-dropdown-toggle="dropdown" type="button">
+          <i class="vuu-ellipsis-vert pl-2"></i>
+        </button>
+        <div
+          id="dropdown"
+          class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+        >
+          <ul aria-labelledby="dropdownButton" class="py-2">
+            <li>
+              <router-link
+                :to="{
+                  name: RouteName.customers_update,
+                  params: {
+                    fullname: customer.firstName + '-' + customer.lastName,
+                    id: customer._id
+                  }
+                }"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                >Düzenle
+              </router-link>
+            </li>
+            <li>
+              <a
+                class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                role="button"
+                @click="modal?.show()"
+                >Sil</a
+              >
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -85,8 +115,8 @@
             <span v-if="customer.address.town">
               &nbsp; / {{ customer.address.town.toString().toLocaleLowerCase('tr') }} Beldesi
             </span>
-            <span v-if="customer.address.neighborhood">
-              &nbsp; / {{ customer.address.neighborhood.toString().toLocaleLowerCase('tr') }} Mah.
+            <span v-if="customer.address.neighbourhood">
+              &nbsp; / {{ customer.address.neighbourhood.toString().toLocaleLowerCase('tr') }} Mah.
             </span>
             <span v-if="customer.address.village">
               &nbsp; / {{ customer.address.village.toString().toLocaleLowerCase('tr') }} Köy.
@@ -138,6 +168,33 @@
         </li>
       </ul>
     </div>
+    <static-modal @modal="(v) => (modal = v)">
+      <template #header
+        ><span class="text-red-600">Silmek istediğinize emin misiniz ?</span></template
+      >
+      <template #default
+        >{{ customer.firstName }} {{ customer.lastName }} isimli müşteriyi silmek istediğinize emin
+        misiniz?
+      </template>
+      <template #footer>
+        <div class="flex justify-end w-full">
+          <button
+            class="text-white bg-red-600 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            type="button"
+            @click="modal?.hide()"
+          >
+            Vazgeç
+          </button>
+          <button
+            class="text-red-600 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+            type="button"
+            @click="deleteCustomer"
+          >
+            Sil
+          </button>
+        </div>
+      </template>
+    </static-modal>
   </div>
 </template>
 <script lang="ts" setup>
@@ -146,25 +203,60 @@ import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { randomInt } from '@/utils/math'
 import type { CustomerInterface } from '@/api/CustomersApi'
-import { getCustomer } from '@/api/CustomersApi'
+import { destroyCustomer, getCustomer } from '@/api/CustomersApi'
 import { isMobile } from '@/api/BrowserApi'
 import type { DeviceInterface } from '@/api/DeviceApi'
 import { getDevices } from '@/api/DeviceApi'
 import ListAccordionItem from '@/components/ListAccordionItem.vue'
+import router from '@/router'
+import {
+  Dropdown,
+  type DropdownInterface,
+  type DropdownOptions,
+  type ModalInterface
+} from 'flowbite'
+import StaticModal from '@/components/StaticModal.vue'
 
 const route = useRoute()
 const customer = ref<CustomerInterface>()
 const devices = ref<DeviceInterface[]>([])
+
+const modal = ref<ModalInterface>()
 
 function customerNameBackColor() {
   const colorArray = ['#6002ee', '#90ee02', '#021aee', '#d602ee', '#ee0290', '#ee6002']
   return `background-color:${colorArray[randomInt(0, colorArray.length)]};`
 }
 
+const deleteCustomer = () => {
+  if (customer.value?._id) {
+    destroyCustomer(customer.value._id).then(() => {
+      modal.value?.hide()
+      router.push({ name: RouteName.customers })
+    })
+  }
+}
+
+const menu = ref<HTMLElement>()
+const button = ref<HTMLElement>()
+const dropdown = ref<DropdownInterface>()
 onMounted(async () => {
   if (route.params.id) {
     customer.value = await getCustomer(route.params.id as string)
     devices.value = await getDevices(route.params.id as string)
+  } else {
+    router.push({ name: RouteName.customers })
   }
+  const options: DropdownOptions = {
+    placement: 'bottom',
+    triggerType: 'click',
+    offsetSkidding: 0,
+    offsetDistance: 10,
+    delay: 300
+  }
+
+  menu.value = document.getElementById('dropdown') || undefined
+  button.value = document.getElementById('dropdownButton') || undefined
+  dropdown.value = new Dropdown(menu.value, button.value, options)
 })
 </script>
