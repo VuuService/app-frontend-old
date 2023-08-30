@@ -6,6 +6,9 @@ export enum RouteName {
   customers_create = 'customers_create',
   customers_update = 'customers_update',
 
+  devices_create = 'devices_create',
+  devices_update = 'devices_update',
+
   customers_selling_device = 'customers_selling_device',
   customers_maintenance_device = 'customers_maintenance_device',
 
