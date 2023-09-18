@@ -13,15 +13,15 @@ export const userStore = defineStore('user', () => {
         value: JSON.parse(localStorage.getItem('user') as string) as UserInterface
       })
     : reactive<{ value: UserInterface }>({ value: userData })
-  const isAuth = computed(() => User.value.token?.access_token != null)
-  const getAccessToken = computed(() => User.value.token?.access_token)
+  const isAuth = computed(() => User.value.token?.accessToken != null)
+  const getAccessToken = computed(() => User.value.token?.accessToken)
   const user = computed((): UserInterface => User.value)
   const permissions = computed(() => User.value.permissions)
   const company = computed(() => User.value.company)
   const exp = computed(() => User.value.exp)
 
   async function login(data: any) {
-    return await AppAxios.post('/users/login', data)
+    return await AppAxios.post('/login', data)
       .then((r: AxiosResponse<UserInterface>) => {
         User.value = r.data
         localStorage.setItem('user', JSON.stringify(r.data))
