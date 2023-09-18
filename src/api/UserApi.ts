@@ -19,8 +19,8 @@ export interface UserInterface {
   status?: boolean
   properties: DefinitionInterface[]
   token?: {
-    access_token: string
-    refresh_token: string
+    accessToken: string
+    refreshToken: string
   }
   company: CompanyInterface | null
 }
@@ -42,7 +42,7 @@ export async function getUsers(): Promise<UserInterface[]> {
 }
 
 export async function getUser(id: string): Promise<UserInterface> {
-  return await AppAxios.get('/users/edit/' + id).then((r: AxiosResponse<UserInterface>) => r.data)
+  return await AppAxios.get('/users/' + id).then((r: AxiosResponse<UserInterface>) => r.data)
 }
 
 export function isGranted(permission: string) {
@@ -52,13 +52,13 @@ export function isGranted(permission: string) {
 }
 
 export async function updateUser(id: string, user: UserInterface): Promise<UserInterface> {
-  return await AppAxios.put('/users/edit/' + id, user).then(
+  return await AppAxios.patch('/users/' + id, user).then(
     (r: AxiosResponse<UserInterface>) => r.data
   )
 }
 
 export async function destroyUser(id: string): Promise<any> {
-  AppAxios.delete('/users/destroy/' + id).then((r: AxiosResponse<any>) => r.data)
+  AppAxios.delete('/users/' + id).then((r: AxiosResponse<any>) => r.data)
 }
 
 export function isRole(role: string[]) {
