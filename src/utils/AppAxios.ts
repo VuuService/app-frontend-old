@@ -2,7 +2,7 @@ import axios from 'axios'
 import { userStore } from '@/stores/AuthStore'
 
 const appAxios = axios.create({
-  baseURL: 'https://localhost:3000',
+  baseURL: 'https://localhost:3000/api/v1',
   withCredentials: true
 })
 appAxios.interceptors.response.use(
